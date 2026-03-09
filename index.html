@@ -32,16 +32,39 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .header h1 {
             font-size: 2em;
             margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .header p {
             font-size: 1.1em;
             opacity: 0.9;
+            position: relative;
+            z-index: 1;
         }
 
         .content {
@@ -66,6 +89,13 @@
             border-radius: 10px;
             padding: 20px;
             border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
         }
 
         .panel h2 {
@@ -95,12 +125,19 @@
             font-family: 'Courier New', monospace;
             font-size: 14px;
             resize: vertical;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: white;
         }
 
         textarea:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea:hover:not(:focus) {
+            border-color: #b8b8b8;
         }
 
         .buttons {
@@ -111,17 +148,38 @@
         }
 
         button {
+            position: relative;
             flex: 1;
             min-width: 150px;
             padding: 15px 30px;
             font-size: 16px;
             font-weight: bold;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-process {
@@ -130,44 +188,123 @@
         }
 
         .btn-process:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
         }
 
         .btn-clear {
-            background: #6c757d;
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
             color: white;
         }
 
         .btn-clear:hover {
-            background: #5a6268;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(108, 117, 125, 0.4);
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
         }
 
         .btn-copy {
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
         }
 
         .btn-copy:hover {
-            background: #218838;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4);
+            background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
         }
 
         .btn-example {
-            background: #ffc107;
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
             color: #333;
         }
 
         .btn-example:hover {
-            background: #e0a800;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 193, 7, 0.4);
+            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
         }
 
         button:active {
-            transform: scale(0.98);
+            transform: translateY(-1px) scale(0.98);
+            transition: all 0.1s;
         }
 
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Animación de pulso para el botón procesar */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(102, 126, 234, 0.6);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+        }
+
+        .btn-process:not(:disabled):not(:hover) {
+            animation: pulse 2s infinite;
+        }
+
+        /* Efecto de éxito en botón copiar */
+        @keyframes success {
+            0% {
+                transform: translateY(-3px) scale(1.02);
+            }
+            50% {
+                transform: translateY(-3px) scale(1.1);
+            }
+            100% {
+                transform: translateY(-3px) scale(1.02);
+            }
+        }
+
+        .btn-copy.copied {
+            animation: success 0.4s ease-out;
+        }
+
+        /* Spinner de carga */
+        .btn-loading {
+            pointer-events: none;
+            position: relative;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-loading span {
+            visibility: hidden;
+        }
+
+        /* Animación de sacudida para errores */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         .stats {
@@ -179,10 +316,40 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
+            animation: fadeInUp 0.6s ease-out;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        /* Animación de entrada para estadísticas */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stat-item {
             text-align: center;
+            animation: scaleIn 0.5s ease-out backwards;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .stat-item:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .stat-value {
@@ -203,11 +370,24 @@
             border-radius: 8px;
             margin-bottom: 20px;
             display: none;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .alert.show {
             display: block;
-            animation: slideIn 0.3s ease-out;
+            animation: slideInDown 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .alert-success {
@@ -228,19 +408,9 @@
             border-left: 4px solid #17a2b8;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .comparison {
             margin-top: 20px;
+            animation: fadeInUp 0.6s ease-out;
         }
 
         .comparison-item {
@@ -250,6 +420,24 @@
             margin-bottom: 15px;
             border-left: 4px solid #667eea;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: slideInRight 0.5s ease-out backwards;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .comparison-item .label {
@@ -297,6 +485,13 @@
             padding: 20px;
             margin-bottom: 20px;
             border-left: 4px solid #2196F3;
+            animation: fadeInUp 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .instructions:hover {
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+            transform: translateX(5px);
         }
 
         .instructions h3 {
@@ -351,10 +546,10 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             </div>
 
             <div class="buttons">
-                <button class="btn-process" onclick="procesarMedicamentos()">🚀 Procesar</button>
-                <button class="btn-copy" onclick="copiarResultado()">📋 Copiar Resultado</button>
-                <button class="btn-clear" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
-                <button class="btn-example" onclick="cargarEjemplo()">💡 Cargar Ejemplo</button>
+                <button class="btn-process" onclick="procesarMedicamentos()"><span>🚀 Procesar</span></button>
+                <button class="btn-copy" onclick="copiarResultado()"><span>📋 Copiar Resultado</span></button>
+                <button class="btn-clear" onclick="limpiarTodo()"><span>🗑️ Limpiar Todo</span></button>
+                <button class="btn-example" onclick="cargarEjemplo()"><span>💡 Cargar Ejemplo</span></button>
             </div>
 
             <div class="stats" id="stats" style="display: none;">
@@ -737,13 +932,23 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
 
         function procesarMedicamentos() {
             const inputText = document.getElementById('inputText').value;
+            const btnProcesar = document.querySelector('.btn-process');
             
             if (!inputText.trim()) {
                 mostrarAlerta('⚠️ Por favor, ingresa al menos un nombre de medicamento.', 'warning');
+                // Shake effect para el botón
+                btnProcesar.style.animation = 'shake 0.5s';
+                setTimeout(() => btnProcesar.style.animation = '', 500);
                 return;
             }
             
-            const { resultados, totalCorrecciones } = procesarLoteMedicamentos(inputText);
+            // Añadir estado de carga
+            btnProcesar.classList.add('btn-loading');
+            btnProcesar.disabled = true;
+            
+            // Simular procesamiento asíncrono para mejor UX
+            setTimeout(() => {
+                const { resultados, totalCorrecciones } = procesarLoteMedicamentos(inputText);
             
             // Construir salida
             const textosSalida = [];
@@ -765,10 +970,15 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             document.getElementById('statCorrecciones').textContent = totalCorrecciones;
             document.getElementById('stats').style.display = 'grid';
             
-            // Mostrar comparación
-            mostrarComparacion(resultados);
-            
-            mostrarAlerta(`✅ ¡Procesamiento completado! ${textosSalida.length} medicamentos normalizados con ${totalCorrecciones} correcciones.`, 'success');
+                // Mostrar comparación
+                mostrarComparacion(resultados);
+                
+                // Remover estado de carga
+                btnProcesar.classList.remove('btn-loading');
+                btnProcesar.disabled = false;
+                
+                mostrarAlerta(`✅ ¡Procesamiento completado! ${textosSalida.length} medicamentos normalizados con ${totalCorrecciones} correcciones.`, 'success');
+            }, 800); // Retraso de 800ms para mostrar el efecto de loading
         }
 
         function mostrarComparacion(resultados) {
@@ -815,37 +1025,77 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
 
         function copiarResultado() {
             const outputText = document.getElementById('outputText');
+            const btnCopiar = document.querySelector('.btn-copy');
             
             if (!outputText.value.trim()) {
                 mostrarAlerta('⚠️ No hay resultados para copiar. Primero procesa algunos medicamentos.', 'warning');
+                btnCopiar.style.animation = 'shake 0.5s';
+                setTimeout(() => btnCopiar.style.animation = '', 500);
                 return;
             }
             
             outputText.select();
             document.execCommand('copy');
             
+            // Efecto visual de éxito
+            btnCopiar.classList.add('copied');
+            const originalText = btnCopiar.innerHTML;
+            btnCopiar.innerHTML = '<span>✅ ¡Copiado!</span>';
+            
+            setTimeout(() => {
+                btnCopiar.classList.remove('copied');
+                btnCopiar.innerHTML = originalText;
+            }, 2000);
+            
             mostrarAlerta('✅ ¡Texto copiado al portapapeles! Ya puedes pegarlo en INVIMA.', 'success');
         }
 
         function limpiarTodo() {
-            document.getElementById('inputText').value = '';
-            document.getElementById('outputText').value = '';
-            document.getElementById('stats').style.display = 'none';
-            document.getElementById('comparison').style.display = 'none';
+            const btnLimpiar = document.querySelector('.btn-clear');
             
-            const alertBox = document.getElementById('alertBox');
-            alertBox.classList.remove('show');
+            // Efecto de loading breve
+            btnLimpiar.classList.add('btn-loading');
             
-            mostrarAlerta('🗑️ Todo limpiado. Puedes empezar de nuevo.', 'info');
+            setTimeout(() => {
+                document.getElementById('inputText').value = '';
+                document.getElementById('outputText').value = '';
+                document.getElementById('stats').style.display = 'none';
+                document.getElementById('comparison').style.display = 'none';
+                
+                const alertBox = document.getElementById('alertBox');
+                alertBox.classList.remove('show');
+                
+                btnLimpiar.classList.remove('btn-loading');
+                
+                mostrarAlerta('🗑️ Todo limpiado. Puedes empezar de nuevo.', 'info');
+            }, 400);
         }
 
         function cargarEjemplo() {
+            const btnEjemplo = document.querySelector('.btn-example');
             const ejemplo = `PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABLETA RECUBIERTA CAJA POR 2 TABLETAS EN BLISTER AL / PVDC
 MELOXICAM Y COMBINACIONES 20 mg CAPSULA DURA CAPSULA DURA MUESTRA MEDICA: CAJA POR 4 CAPSULAS EN BLISTER DE PVC-PVDC/APARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABLETA RECUBIERTA CAJA POR 2 TABLETAS EN BLISTER AL / PVDCLUMINIO+BOLSA SACHET.
 ETANOL 73.7 mL. 100ML SOLUCION TOPICA FRASCO DE VIDRIO TIPO III POR 360 ML.`;
             
-            document.getElementById('inputText').value = ejemplo;
-            mostrarAlerta('💡 Ejemplo cargado. Haz clic en "Procesar" para ver cómo funciona.', 'info');
+            // Efecto de loading breve
+            btnEjemplo.classList.add('btn-loading');
+            
+            setTimeout(() => {
+                document.getElementById('inputText').value = ejemplo;
+                btnEjemplo.classList.remove('btn-loading');
+                
+                // Efecto de highlight en el textarea
+                const inputTextarea = document.getElementById('inputText');
+                inputTextarea.style.borderColor = '#ffc107';
+                inputTextarea.style.boxShadow = '0 0 20px rgba(255, 193, 7, 0.5)';
+                
+                setTimeout(() => {
+                    inputTextarea.style.borderColor = '';
+                    inputTextarea.style.boxShadow = '';
+                }, 1500);
+                
+                mostrarAlerta('💡 Ejemplo cargado. Haz clic en "Procesar" para ver cómo funciona.', 'info');
+            }, 300);
         }
 
         // Atajos de teclado
