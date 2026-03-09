@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limpiador de Nombres de Medicamentos</title>
+    <title>Limpiador de Nombres de Medicamentos INVIMA</title>
     <style>
         * {
             margin: 0;
@@ -319,17 +319,17 @@
     <div class="container">
         <div class="header">
             <h1>🧹 Limpiador de Nombres de Medicamentos</h1>
-            <p>Depura y optimiza nombres de medicamentos con datos repetidos</p>
+            <p>Depura, optimiza y normaliza nombres según estándares INVIMA</p>
         </div>
 
         <div class="content">
             <div class="instructions">
                 <h3>📖 Instrucciones de Uso:</h3>
                 <ul>
-                    <li><strong>Pega</strong> los nombres de medicamentos en el área de entrada (uno por línea o varios)</li>
-                    <li><strong>Haz clic</strong> en "Procesar" para limpiarlos automáticamente</li>
-                    <li><strong>Copia</strong> los resultados limpios para pegarlos en tu aplicativo</li>
-                    <li>El sistema detecta y elimina: texto duplicado, concatenaciones, espacios extras, etc.</li>
+                    <li><strong>Pega</strong> los nombres de medicamentos en el área de entrada</li>
+                    <li><strong>Haz clic</strong> en "Procesar" para normalizarlos automáticamente</li>
+                    <li><strong>Copia</strong> los resultados limpios para pegarlos en INVIMA</li>
+                    <li>El sistema elimina duplicados, ajusta espacios, normaliza mayúsculas y corrige formatos</li>
                 </ul>
             </div>
 
@@ -367,8 +367,8 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                     <div class="stat-label">Procesados</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="statDuplicados">0</div>
-                    <div class="stat-label">Duplicados Removidos</div>
+                    <div class="stat-value" id="statCorrecciones">0</div>
+                    <div class="stat-label">Correcciones</div>
                 </div>
             </div>
 
@@ -376,17 +376,69 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
         </div>
 
         <div class="footer">
-            <p>© 2026 - Herramienta de Normalización de Medicamentos RIPS</p>
-            <p style="font-size: 0.9em; margin-top: 5px; opacity: 0.7;">Desarrollado para optimizar la gestión de datos INVIMA</p>
+            <p>© 2026 - Herramienta de Normalización de Medicamentos RIPS/INVIMA</p>
+            <p style="font-size: 0.9em; margin-top: 5px; opacity: 0.7;">Versión 2.0 - Mejorada con normalización inteligente</p>
         </div>
     </div>
 
     <script>
-        // Funciones de limpieza de texto
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCIONES MEJORADAS DE LIMPIEZA Y NORMALIZACIÓN
+        // ═══════════════════════════════════════════════════════════════
+
         function normalizarTexto(texto) {
             if (!texto) return "";
+            
+            // Normalizar espacios múltiples
             texto = texto.replace(/\s+/g, ' ');
-            return texto.trim();
+            
+            // Eliminar espacios antes/después
+            texto = texto.trim();
+            
+            return texto;
+        }
+
+        function normalizarMayusculas(texto) {
+            // Convertir todo a mayúsculas primero
+            texto = texto.toUpperCase();
+            
+            // Patrones que deben mantener formato específico
+            const patronesEspeciales = [
+                { pattern: /\bMG\b/g, replacement: 'mg' },
+                { pattern: /\bML\b/g, replacement: 'mL' },
+                { pattern: /\bMCG\b/g, replacement: 'mcg' },
+                { pattern: /\bUI\b/g, replacement: 'UI' },
+                { pattern: /\bG\b(?!\s*\/)/g, replacement: 'g' },
+                { pattern: /\b%\b/g, replacement: '%' }
+            ];
+            
+            patronesEspeciales.forEach(p => {
+                texto = texto.replace(p.pattern, p.replacement);
+            });
+            
+            return texto;
+        }
+
+        function corregirEspaciado(texto) {
+            // Espacios antes de unidades de medida
+            texto = texto.replace(/(\d+)\s*(mg|mL|g|mcg|UI|%)/gi, '$1 $2');
+            
+            // Sin espacio extra antes de puntuación
+            texto = texto.replace(/\s+([,.;:])/g, '$1');
+            
+            // Espacio después de puntuación (excepto en abreviaturas)
+            texto = texto.replace(/([,.;:])(?!\s)/g, '$1 ');
+            
+            // Espacios alrededor de "/"
+            texto = texto.replace(/\s*\/\s*/g, '/');
+            
+            // Espacios en "CAJA POR"
+            texto = texto.replace(/CAJA\s*POR/gi, 'CAJA POR');
+            
+            // Espacios en "EN BLISTER"
+            texto = texto.replace(/EN\s*BLISTER/gi, 'EN BLISTER');
+            
+            return texto;
         }
 
         function eliminarDuplicadosConsecutivos(texto) {
@@ -399,8 +451,8 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             while (i < palabras.length) {
                 let encontrado = false;
                 
-                // Probar patrones de 15 palabras hacia abajo
-                for (let longitud = Math.min(15, palabras.length - i); longitud > 0; longitud--) {
+                // Probar patrones de 20 palabras hacia abajo
+                for (let longitud = Math.min(20, palabras.length - i); longitud > 0; longitud--) {
                     if (i + longitud * 2 <= palabras.length) {
                         const patron = palabras.slice(i, i + longitud);
                         const siguiente = palabras.slice(i + longitud, i + longitud * 2);
@@ -423,118 +475,143 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             return resultado.join(' ');
         }
 
-        function limpiarRepeticionesEspecificas(texto) {
-            // Buscar patrones como "CAJA POR X CAPSULAS" duplicado
-            let textoLimpio = texto;
+        function corregirFormatos(texto) {
+            const correcciones = {
+                // Correcciones de empaque
+                'PVDCLUMINIO': 'PVDC/ALUMINIO',
+                'PVDC/PVDC/': 'PVDC/',
+                'PVC-PVDC/A': 'PVC-PVDC/ALUMINIO',
+                'ALUMI NIO': 'ALUMINIO',
+                'ALUMI-NIO': 'ALUMINIO',
+                'AL / PVDC': 'AL/PVDC',
+                'AL/ PVDC': 'AL/PVDC',
+                'AL /PVDC': 'AL/PVDC',
+                'AL/  PVDC': 'AL/PVDC',
+                
+                // Correcciones de presentación
+                'MUESTRA MEDICA:': 'MUESTRA MEDICA',
+                'MUESTRA MEDICA :': 'MUESTRA MEDICA',
+                
+                // Correcciones de formatos farmacéuticos
+                'CAPSULA DURA': 'CAPSULA DURA',
+                'CAPSULA BLANDA': 'CAPSULA BLANDA',
+                'TABLETA RECUBIERTA': 'TABLETA RECUBIERTA',
+                'SOLUCION TOPICA': 'SOLUCION TOPICA',
+                'SOLUCION INYECTABLE': 'SOLUCION INYECTABLE',
+                
+                // Correcciones específicas
+                '/APARACETAMOL': ' PARACETAMOL',
+                'PVDC/APARA': 'PVDC/ALUMINIO PARA',
+                '  /': ' /',
+                '/  ': '/ ',
+                '+ ': ' + ',
+                ' +': ' + '
+            };
             
-            // Patrón para detectar frases repetidas
-            const pattern = /(\b[A-Z\s]+POR\s+[^\s]+\s+[A-Z]+[^.]*?)\s+\1/gi;
-            textoLimpio = textoLimpio.replace(pattern, '$1');
+            for (const [error, correccion] of Object.entries(correcciones)) {
+                const regex = new RegExp(error.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                texto = texto.replace(regex, correccion);
+            }
             
-            return textoLimpio;
+            return texto;
         }
 
         function separarMedicamentosConcatenados(texto) {
             const medicamentos = [];
             
-            // Buscar patrones de códigos CUM (7+ dígitos seguidos de guión y dígito)
-            const partes = texto.split(/(\d{7,}-\d)/);
+            // Buscar patrones de códigos CUM
+            const regex = /\d{7,}-\d/g;
+            const matches = texto.match(regex);
             
-            if (partes.length > 2) {
-                for (let i = 1; i < partes.length; i += 2) {
-                    if (i + 1 < partes.length) {
-                        const medicamento = partes[i] + partes[i + 1];
-                        medicamentos.push(medicamento.trim());
+            if (matches && matches.length > 1) {
+                let lastIndex = 0;
+                matches.forEach((match, idx) => {
+                    const index = texto.indexOf(match, lastIndex);
+                    if (idx > 0) {
+                        const fragmento = texto.substring(lastIndex, index);
+                        medicamentos.push(fragmento.trim());
                     }
+                    lastIndex = index;
+                });
+                const ultimoFragmento = texto.substring(lastIndex);
+                if (ultimoFragmento.trim()) {
+                    medicamentos.push(ultimoFragmento.trim());
                 }
+                return medicamentos;
             }
             
-            // Si no hay códigos CUM, buscar patrones de principio activo
-            if (medicamentos.length === 0) {
-                // Buscar "NOMBRE Y COMBINACIONES"
-                const regex = /\b[A-Z]{4,}[A-Z\s]+Y COMBINACIONES\s+\d+\s*(?:mg|mL|g|UI|%)/g;
-                const matches = texto.match(regex);
-                
-                if (matches && matches.length > 1) {
-                    let lastIndex = 0;
-                    matches.forEach(match => {
-                        const index = texto.indexOf(match, lastIndex);
-                        if (index > lastIndex) {
-                            const fragmento = texto.substring(lastIndex, index);
-                            if (fragmento.trim()) {
-                                medicamentos.push(fragmento.trim());
-                            }
-                        }
-                        lastIndex = index;
-                    });
-                    
-                    // Agregar el último fragmento
-                    const ultimoFragmento = texto.substring(lastIndex);
-                    if (ultimoFragmento.trim()) {
-                        medicamentos.push(ultimoFragmento.trim());
+            // Buscar por principios activos repetidos
+            const principioActivoRegex = /\b[A-Z]{4,}[A-Z\s]+(?:Y COMBINACIONES|COMBINACIONES)\s+(?:EXCLUYENDO\s+\w+\s+)?\d+\s*(?:mg|mL|g|mcg|UI|%)/g;
+            const principios = texto.match(principioActivoRegex);
+            
+            if (principios && principios.length > 1) {
+                let lastIndex = 0;
+                principios.forEach((principio, idx) => {
+                    const index = texto.indexOf(principio, lastIndex);
+                    if (idx > 0) {
+                        const fragmento = texto.substring(lastIndex, index);
+                        medicamentos.push(fragmento.trim());
                     }
+                    lastIndex = index;
+                });
+                const ultimoFragmento = texto.substring(lastIndex);
+                if (ultimoFragmento.trim()) {
+                    medicamentos.push(ultimoFragmento.trim());
                 }
+                return medicamentos;
             }
             
-            // Si no se pudo separar, retornar el texto original
-            if (medicamentos.length === 0) {
-                medicamentos.push(texto);
-            }
-            
-            return medicamentos;
-        }
-
-        function aplicarCorreccionesEspecificas(texto) {
-            const correcciones = {
-                'PVDCLUMINIO': 'PVDC/ALUMINIO',
-                'PVDC/PVDC/': 'PVDC/',
-                'PVC-PVDC/A': 'PVC-PVDC/ALUMINIO',
-                '  /': ' /',
-                '/  ': '/ ',
-                '/ PVDC': '/ PVDC',
-                'AL / PVDC': 'AL/PVDC',
-                'PVC-PVDC/APARA': 'PVC-PVDC/ALUMINIO ',
-                '/A': '/ALUMINIO'
-            };
-            
-            let textoCorregido = texto;
-            for (const [error, correccion] of Object.entries(correcciones)) {
-                textoCorregido = textoCorregido.replace(new RegExp(error, 'g'), correccion);
-            }
-            
-            return textoCorregido;
+            return [texto];
         }
 
         function limpiarNombreMedicamento(texto) {
             if (!texto || texto.trim() === "") return "";
             
-            // 1. Normalizar texto básico
-            let textoLimpio = normalizarTexto(texto);
+            let original = texto;
+            let correcciones = 0;
+            
+            // 1. Normalizar espacios básicos
+            texto = normalizarTexto(texto);
+            if (texto !== original) correcciones++;
             
             // 2. Eliminar duplicados consecutivos
-            textoLimpio = eliminarDuplicadosConsecutivos(textoLimpio);
+            let temp = texto;
+            texto = eliminarDuplicadosConsecutivos(texto);
+            if (texto !== temp) correcciones++;
             
-            // 3. Limpiar repeticiones específicas
-            textoLimpio = limpiarRepeticionesEspecificas(textoLimpio);
+            // 3. Normalizar mayúsculas/minúsculas
+            temp = texto;
+            texto = normalizarMayusculas(texto);
+            if (texto !== temp) correcciones++;
             
-            // 4. Normalizar nuevamente
-            textoLimpio = normalizarTexto(textoLimpio);
+            // 4. Corregir espaciado
+            temp = texto;
+            texto = corregirEspaciado(texto);
+            if (texto !== temp) correcciones++;
             
-            // 5. Aplicar correcciones específicas
-            textoLimpio = aplicarCorreccionesEspecificas(textoLimpio);
+            // 5. Corregir formatos específicos
+            temp = texto;
+            texto = corregirFormatos(texto);
+            if (texto !== temp) correcciones++;
             
-            return textoLimpio;
+            // 6. Normalización final
+            texto = normalizarTexto(texto);
+            
+            // 7. Eliminar puntos finales innecesarios
+            texto = texto.replace(/\.\s*$/, '');
+            
+            return { texto, correcciones };
         }
 
         function detectarConcatenaciones(texto) {
-            // Detectar múltiples medicamentos por códigos CUM
+            // Detectar múltiples códigos CUM
             const cumMatches = texto.match(/\d{7,}-\d/g);
             if (cumMatches && cumMatches.length > 1) {
                 return true;
             }
             
-            // Detectar por principio activo repetido
-            const principioActivoMatches = texto.match(/\b[A-Z]{4,}[A-Z\s]+Y COMBINACIONES\s+\d+\s*(?:mg|mL|g|UI|%)/g);
+            // Detectar principios activos repetidos
+            const principioActivoMatches = texto.match(/\b[A-Z]{4,}[A-Z\s]+(?:Y COMBINACIONES|COMBINACIONES)\s+(?:EXCLUYENDO\s+\w+\s+)?\d+\s*(?:mg|mL|g|mcg|UI|%)/g);
             if (principioActivoMatches && principioActivoMatches.length > 1) {
                 return true;
             }
@@ -545,6 +622,7 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
         function procesarLoteMedicamentos(textoEntrada) {
             const lineas = textoEntrada.trim().split('\n');
             const resultados = [];
+            let totalCorrecciones = 0;
             
             lineas.forEach((linea, idx) => {
                 linea = linea.trim();
@@ -556,34 +634,43 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                     const medicamentosSeparados = separarMedicamentosConcatenados(linea);
                     
                     if (medicamentosSeparados.length > 1) {
-                        const medicamentosLimpios = medicamentosSeparados.map(m => limpiarNombreMedicamento(m));
+                        const medicamentosLimpios = medicamentosSeparados.map(m => {
+                            const result = limpiarNombreMedicamento(m);
+                            totalCorrecciones += result.correcciones;
+                            return result.texto;
+                        });
                         resultados.push({
                             numero: idx + 1,
                             original: linea,
                             tipo: 'MULTIPLE',
-                            limpios: medicamentosLimpios
+                            limpios: medicamentosLimpios,
+                            correcciones: medicamentosLimpios.length - 1
                         });
                     } else {
-                        const limpio = limpiarNombreMedicamento(linea);
+                        const result = limpiarNombreMedicamento(linea);
+                        totalCorrecciones += result.correcciones;
                         resultados.push({
                             numero: idx + 1,
                             original: linea,
                             tipo: 'UNICO',
-                            limpio: limpio
+                            limpio: result.texto,
+                            correcciones: result.correcciones
                         });
                     }
                 } else {
-                    const limpio = limpiarNombreMedicamento(linea);
+                    const result = limpiarNombreMedicamento(linea);
+                    totalCorrecciones += result.correcciones;
                     resultados.push({
                         numero: idx + 1,
                         original: linea,
                         tipo: 'UNICO',
-                        limpio: limpio
+                        limpio: result.texto,
+                        correcciones: result.correcciones
                     });
                 }
             });
             
-            return resultados;
+            return { resultados, totalCorrecciones };
         }
 
         function mostrarAlerta(mensaje, tipo = 'success') {
@@ -604,22 +691,16 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 return;
             }
             
-            const resultados = procesarLoteMedicamentos(inputText);
+            const { resultados, totalCorrecciones } = procesarLoteMedicamentos(inputText);
             
             // Construir salida
             const textosSalida = [];
-            let duplicadosRemovidos = 0;
             
             resultados.forEach(resultado => {
                 if (resultado.tipo === 'MULTIPLE') {
                     textosSalida.push(...resultado.limpios);
-                    duplicadosRemovidos += resultado.limpios.length - 1;
                 } else {
                     textosSalida.push(resultado.limpio);
-                    // Contar si hubo cambios
-                    if (resultado.original !== resultado.limpio) {
-                        duplicadosRemovidos++;
-                    }
                 }
             });
             
@@ -629,13 +710,13 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             // Actualizar estadísticas
             document.getElementById('statOriginal').textContent = resultados.length;
             document.getElementById('statProcesados').textContent = textosSalida.length;
-            document.getElementById('statDuplicados').textContent = duplicadosRemovidos;
+            document.getElementById('statCorrecciones').textContent = totalCorrecciones;
             document.getElementById('stats').style.display = 'grid';
             
             // Mostrar comparación
             mostrarComparacion(resultados);
             
-            mostrarAlerta(`✅ ¡Procesamiento completado! ${textosSalida.length} medicamentos limpios.`, 'success');
+            mostrarAlerta(`✅ ¡Procesamiento completado! ${textosSalida.length} medicamentos normalizados con ${totalCorrecciones} correcciones.`, 'success');
         }
 
         function mostrarComparacion(resultados) {
@@ -659,7 +740,7 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         const limpioDiv = document.createElement('div');
                         limpioDiv.className = 'comparison-item cleaned';
                         limpioDiv.innerHTML = `
-                            <div class="label">✅ Limpio (${resultado.numero}.${idx + 1}):</div>
+                            <div class="label">✅ Normalizado (${resultado.numero}.${idx + 1}):</div>
                             <div class="text">${limpio}</div>
                         `;
                         itemDiv.appendChild(limpioDiv);
@@ -668,7 +749,7 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                     const limpioDiv = document.createElement('div');
                     limpioDiv.className = 'comparison-item cleaned';
                     limpioDiv.innerHTML = `
-                        <div class="label">✅ Limpio (${resultado.numero}):</div>
+                        <div class="label">✅ Normalizado (${resultado.numero}) - ${resultado.correcciones} correcciones:</div>
                         <div class="text">${resultado.limpio}</div>
                     `;
                     itemDiv.appendChild(limpioDiv);
@@ -691,7 +772,7 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             outputText.select();
             document.execCommand('copy');
             
-            mostrarAlerta('✅ ¡Texto copiado al portapapeles! Ya puedes pegarlo en tu aplicativo.', 'success');
+            mostrarAlerta('✅ ¡Texto copiado al portapapeles! Ya puedes pegarlo en INVIMA.', 'success');
         }
 
         function limpiarTodo() {
