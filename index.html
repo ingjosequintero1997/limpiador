@@ -441,8 +441,46 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             return texto;
         }
 
+        function normalizarParaComparar(texto) {
+            // Normalizar para comparación: sin tildes, sin Ñ, mayúsculas
+            return texto
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/Ñ/g, 'N')
+                .toUpperCase();
+        }
+
+        function separarPalabrasPegadas(texto) {
+            // Separar palabras comunes pegadas
+            const patrones = [
+                { regex: /SIN\s*DATO?X?/gi, replacement: ' SIN DATO' },
+                { regex: /SIN\s*DATO?C\/U/gi, replacement: ' SIN DATO C/U' },
+                { regex: /(\w+)(SIN\s*DATO)/gi, replacement: '$1 SIN DATO' },
+                { regex: /(ALUMINIO)(SIN)/gi, replacement: '$1 SIN' },
+                { regex: /(CAPSULAS?)(SIN)/gi, replacement: '$1 SIN' },
+                { regex: /(TABLETAS?)(SIN)/gi, replacement: '$1 SIN' },
+                { regex: /(BLISTER)(PVC)/gi, replacement: '$1 PVC' },
+                { regex: /(PVC\/PVDC\/ALUMINIO)(SIN)/gi, replacement: '$1 SIN' },
+                { regex: /(\d+)(CAPSULAS?)/gi, replacement: '$1 CAPSULAS' },
+                { regex: /(\d+)(TABLETAS?)/gi, replacement: '$1 TABLETAS' },
+                { regex: /(CAJA)(POR)/gi, replacement: '$1 POR' },
+                { regex: /(EN)(BLISTER)/gi, replacement: '$1 BLISTER' }
+            ];
+            
+            patrones.forEach(p => {
+                texto = texto.replace(p.regex, p.replacement);
+            });
+            
+            // Normalizar múltiples espacios
+            texto = texto.replace(/\s+/g, ' ').trim();
+            
+            return texto;
+        }
+
         function eliminarDuplicadosConsecutivos(texto) {
             if (!texto) return "";
+            
+            // Primero separar palabras pegadas
+            texto = separarPalabrasPegadas(texto);
             
             const palabras = texto.split(' ');
             const resultado = [];
@@ -457,7 +495,11 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         const patron = palabras.slice(i, i + longitud);
                         const siguiente = palabras.slice(i + longitud, i + longitud * 2);
                         
-                        if (JSON.stringify(patron) === JSON.stringify(siguiente)) {
+                        // Comparar ignorando tildes y mayúsculas
+                        const patronNorm = patron.map(p => normalizarParaComparar(p));
+                        const siguienteNorm = siguiente.map(s => normalizarParaComparar(s));
+                        
+                        if (JSON.stringify(patronNorm) === JSON.stringify(siguienteNorm)) {
                             resultado.push(...patron);
                             i += longitud * 2;
                             encontrado = true;
@@ -502,10 +544,20 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 // Correcciones específicas
                 '/APARACETAMOL': ' PARACETAMOL',
                 'PVDC/APARA': 'PVDC/ALUMINIO PARA',
+                
+                // Limpiar SIN DATO mal formateados
+                'SIN DATOX': 'SIN DATO',
+                'SIN DATOC/U': 'SIN DATO',
+                'SINDATO': 'SIN DATO',
+                'SINDATOX': 'SIN DATO',
+                'SINDATOC/U': 'SIN DATO',
+                
+                // Espaciado
                 '  /': ' /',
                 '/  ': '/ ',
                 '+ ': ' + ',
-                ' +': ' + '
+                ' +': ' + ',
+                '  ': ' '
             };
             
             for (const [error, correccion] of Object.entries(correcciones)) {
