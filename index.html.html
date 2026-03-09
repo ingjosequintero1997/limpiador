@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpiador de Nombres de Medicamentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 968px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .panel h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel h2::before {
+            content: "📋";
+            font-size: 1.2em;
+        }
+
+        .panel.output h2::before {
+            content: "✨";
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-process {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-process:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-clear {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #5a6268;
+        }
+
+        .btn-copy {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #218838;
+        }
+
+        .btn-example {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-example:hover {
+            background: #e0a800;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .stats {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comparison {
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .comparison-item .label {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .comparison-item .text {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .comparison-item.original {
+            border-left-color: #dc3545;
+        }
+
+        .comparison-item.original .label {
+            color: #dc3545;
+        }
+
+        .comparison-item.cleaned {
+            border-left-color: #28a745;
+        }
+
+        .comparison-item.cleaned .label {
+            color: #28a745;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 30px;
+        }
+
+        .instructions {
+            background: #e7f3ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .instructions h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧹 Limpiador de Nombres de Medicamentos</h1>
+            <p>Depura y optimiza nombres de medicamentos con datos repetidos</p>
+        </div>
+
+        <div class="content">
+            <div class="instructions">
+                <h3>📖 Instrucciones de Uso:</h3>
+                <ul>
+                    <li><strong>Pega</strong> los nombres de medicamentos en el área de entrada (uno por línea o varios)</li>
+                    <li><strong>Haz clic</strong> en "Procesar" para limpiarlos automáticamente</li>
+                    <li><strong>Copia</strong> los resultados limpios para pegarlos en tu aplicativo</li>
+                    <li>El sistema detecta y elimina: texto duplicado, concatenaciones, espacios extras, etc.</li>
+                </ul>
+            </div>
+
+            <div id="alertBox" class="alert"></div>
+
+            <div class="grid">
+                <div class="panel">
+                    <h2>Entrada (Original)</h2>
+                    <textarea id="inputText" placeholder="Pega aquí los nombres de medicamentos a limpiar...
+
+Ejemplo:
+PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABLETA RECUBIERTA CAJA POR 2 TABLETAS EN BLISTER AL / PVDC"></textarea>
+                </div>
+
+                <div class="panel output">
+                    <h2>Salida (Limpio)</h2>
+                    <textarea id="outputText" placeholder="Los resultados limpios aparecerán aquí..." readonly></textarea>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn-process" onclick="procesarMedicamentos()">🚀 Procesar</button>
+                <button class="btn-copy" onclick="copiarResultado()">📋 Copiar Resultado</button>
+                <button class="btn-clear" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
+                <button class="btn-example" onclick="cargarEjemplo()">💡 Cargar Ejemplo</button>
+            </div>
+
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-value" id="statOriginal">0</div>
+                    <div class="stat-label">Entradas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statProcesados">0</div>
+                    <div class="stat-label">Procesados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statDuplicados">0</div>
+                    <div class="stat-label">Duplicados Removidos</div>
+                </div>
+            </div>
+
+            <div id="comparison" class="comparison" style="display: none;"></div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 - Herramienta de Normalización de Medicamentos RIPS</p>
+            <p style="font-size: 0.9em; margin-top: 5px; opacity: 0.7;">Desarrollado para optimizar la gestión de datos INVIMA</p>
+        </div>
+    </div>
+
+    <script>
+        // Funciones de limpieza de texto
+        function normalizarTexto(texto) {
+            if (!texto) return "";
+            texto = texto.replace(/\s+/g, ' ');
+            return texto.trim();
+        }
+
+        function eliminarDuplicadosConsecutivos(texto) {
+            if (!texto) return "";
+            
+            const palabras = texto.split(' ');
+            const resultado = [];
+            let i = 0;
+            
+            while (i < palabras.length) {
+                let encontrado = false;
+                
+                // Probar patrones de 15 palabras hacia abajo
+                for (let longitud = Math.min(15, palabras.length - i); longitud > 0; longitud--) {
+                    if (i + longitud * 2 <= palabras.length) {
+                        const patron = palabras.slice(i, i + longitud);
+                        const siguiente = palabras.slice(i + longitud, i + longitud * 2);
+                        
+                        if (JSON.stringify(patron) === JSON.stringify(siguiente)) {
+                            resultado.push(...patron);
+                            i += longitud * 2;
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if (!encontrado) {
+                    resultado.push(palabras[i]);
+                    i++;
+                }
+            }
+            
+            return resultado.join(' ');
+        }
+
+        function limpiarRepeticionesEspecificas(texto) {
+            // Buscar patrones como "CAJA POR X CAPSULAS" duplicado
+            let textoLimpio = texto;
+            
+            // Patrón para detectar frases repetidas
+            const pattern = /(\b[A-Z\s]+POR\s+[^\s]+\s+[A-Z]+[^.]*?)\s+\1/gi;
+            textoLimpio = textoLimpio.replace(pattern, '$1');
+            
+            return textoLimpio;
+        }
+
+        function separarMedicamentosConcatenados(texto) {
+            const medicamentos = [];
+            
+            // Buscar patrones de códigos CUM (7+ dígitos seguidos de guión y dígito)
+            const partes = texto.split(/(\d{7,}-\d)/);
+            
+            if (partes.length > 2) {
+                for (let i = 1; i < partes.length; i += 2) {
+                    if (i + 1 < partes.length) {
+                        const medicamento = partes[i] + partes[i + 1];
+                        medicamentos.push(medicamento.trim());
+                    }
+                }
+            }
+            
+            // Si no hay códigos CUM, buscar patrones de principio activo
+            if (medicamentos.length === 0) {
+                // Buscar "NOMBRE Y COMBINACIONES"
+                const regex = /\b[A-Z]{4,}[A-Z\s]+Y COMBINACIONES\s+\d+\s*(?:mg|mL|g|UI|%)/g;
+                const matches = texto.match(regex);
+                
+                if (matches && matches.length > 1) {
+                    let lastIndex = 0;
+                    matches.forEach(match => {
+                        const index = texto.indexOf(match, lastIndex);
+                        if (index > lastIndex) {
+                            const fragmento = texto.substring(lastIndex, index);
+                            if (fragmento.trim()) {
+                                medicamentos.push(fragmento.trim());
+                            }
+                        }
+                        lastIndex = index;
+                    });
+                    
+                    // Agregar el último fragmento
+                    const ultimoFragmento = texto.substring(lastIndex);
+                    if (ultimoFragmento.trim()) {
+                        medicamentos.push(ultimoFragmento.trim());
+                    }
+                }
+            }
+            
+            // Si no se pudo separar, retornar el texto original
+            if (medicamentos.length === 0) {
+                medicamentos.push(texto);
+            }
+            
+            return medicamentos;
+        }
+
+        function aplicarCorreccionesEspecificas(texto) {
+            const correcciones = {
+                'PVDCLUMINIO': 'PVDC/ALUMINIO',
+                'PVDC/PVDC/': 'PVDC/',
+                'PVC-PVDC/A': 'PVC-PVDC/ALUMINIO',
+                '  /': ' /',
+                '/  ': '/ ',
+                '/ PVDC': '/ PVDC',
+                'AL / PVDC': 'AL/PVDC',
+                'PVC-PVDC/APARA': 'PVC-PVDC/ALUMINIO ',
+                '/A': '/ALUMINIO'
+            };
+            
+            let textoCorregido = texto;
+            for (const [error, correccion] of Object.entries(correcciones)) {
+                textoCorregido = textoCorregido.replace(new RegExp(error, 'g'), correccion);
+            }
+            
+            return textoCorregido;
+        }
+
+        function limpiarNombreMedicamento(texto) {
+            if (!texto || texto.trim() === "") return "";
+            
+            // 1. Normalizar texto básico
+            let textoLimpio = normalizarTexto(texto);
+            
+            // 2. Eliminar duplicados consecutivos
+            textoLimpio = eliminarDuplicadosConsecutivos(textoLimpio);
+            
+            // 3. Limpiar repeticiones específicas
+            textoLimpio = limpiarRepeticionesEspecificas(textoLimpio);
+            
+            // 4. Normalizar nuevamente
+            textoLimpio = normalizarTexto(textoLimpio);
+            
+            // 5. Aplicar correcciones específicas
+            textoLimpio = aplicarCorreccionesEspecificas(textoLimpio);
+            
+            return textoLimpio;
+        }
+
+        function detectarConcatenaciones(texto) {
+            // Detectar múltiples medicamentos por códigos CUM
+            const cumMatches = texto.match(/\d{7,}-\d/g);
+            if (cumMatches && cumMatches.length > 1) {
+                return true;
+            }
+            
+            // Detectar por principio activo repetido
+            const principioActivoMatches = texto.match(/\b[A-Z]{4,}[A-Z\s]+Y COMBINACIONES\s+\d+\s*(?:mg|mL|g|UI|%)/g);
+            if (principioActivoMatches && principioActivoMatches.length > 1) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        function procesarLoteMedicamentos(textoEntrada) {
+            const lineas = textoEntrada.trim().split('\n');
+            const resultados = [];
+            
+            lineas.forEach((linea, idx) => {
+                linea = linea.trim();
+                if (!linea) return;
+                
+                const tieneConcatenaciones = detectarConcatenaciones(linea);
+                
+                if (tieneConcatenaciones) {
+                    const medicamentosSeparados = separarMedicamentosConcatenados(linea);
+                    
+                    if (medicamentosSeparados.length > 1) {
+                        const medicamentosLimpios = medicamentosSeparados.map(m => limpiarNombreMedicamento(m));
+                        resultados.push({
+                            numero: idx + 1,
+                            original: linea,
+                            tipo: 'MULTIPLE',
+                            limpios: medicamentosLimpios
+                        });
+                    } else {
+                        const limpio = limpiarNombreMedicamento(linea);
+                        resultados.push({
+                            numero: idx + 1,
+                            original: linea,
+                            tipo: 'UNICO',
+                            limpio: limpio
+                        });
+                    }
+                } else {
+                    const limpio = limpiarNombreMedicamento(linea);
+                    resultados.push({
+                        numero: idx + 1,
+                        original: linea,
+                        tipo: 'UNICO',
+                        limpio: limpio
+                    });
+                }
+            });
+            
+            return resultados;
+        }
+
+        function mostrarAlerta(mensaje, tipo = 'success') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `alert alert-${tipo} show`;
+            alertBox.textContent = mensaje;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        function procesarMedicamentos() {
+            const inputText = document.getElementById('inputText').value;
+            
+            if (!inputText.trim()) {
+                mostrarAlerta('⚠️ Por favor, ingresa al menos un nombre de medicamento.', 'warning');
+                return;
+            }
+            
+            const resultados = procesarLoteMedicamentos(inputText);
+            
+            // Construir salida
+            const textosSalida = [];
+            let duplicadosRemovidos = 0;
+            
+            resultados.forEach(resultado => {
+                if (resultado.tipo === 'MULTIPLE') {
+                    textosSalida.push(...resultado.limpios);
+                    duplicadosRemovidos += resultado.limpios.length - 1;
+                } else {
+                    textosSalida.push(resultado.limpio);
+                    // Contar si hubo cambios
+                    if (resultado.original !== resultado.limpio) {
+                        duplicadosRemovidos++;
+                    }
+                }
+            });
+            
+            const outputText = textosSalida.join('\n');
+            document.getElementById('outputText').value = outputText;
+            
+            // Actualizar estadísticas
+            document.getElementById('statOriginal').textContent = resultados.length;
+            document.getElementById('statProcesados').textContent = textosSalida.length;
+            document.getElementById('statDuplicados').textContent = duplicadosRemovidos;
+            document.getElementById('stats').style.display = 'grid';
+            
+            // Mostrar comparación
+            mostrarComparacion(resultados);
+            
+            mostrarAlerta(`✅ ¡Procesamiento completado! ${textosSalida.length} medicamentos limpios.`, 'success');
+        }
+
+        function mostrarComparacion(resultados) {
+            const comparisonDiv = document.getElementById('comparison');
+            comparisonDiv.innerHTML = '<h3 style="color: #667eea; margin-bottom: 15px;">📊 Comparación Detallada:</h3>';
+            
+            resultados.forEach(resultado => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.marginBottom = '20px';
+                
+                const originalDiv = document.createElement('div');
+                originalDiv.className = 'comparison-item original';
+                originalDiv.innerHTML = `
+                    <div class="label">❌ Original (${resultado.numero}):</div>
+                    <div class="text">${resultado.original}</div>
+                `;
+                itemDiv.appendChild(originalDiv);
+                
+                if (resultado.tipo === 'MULTIPLE') {
+                    resultado.limpios.forEach((limpio, idx) => {
+                        const limpioDiv = document.createElement('div');
+                        limpioDiv.className = 'comparison-item cleaned';
+                        limpioDiv.innerHTML = `
+                            <div class="label">✅ Limpio (${resultado.numero}.${idx + 1}):</div>
+                            <div class="text">${limpio}</div>
+                        `;
+                        itemDiv.appendChild(limpioDiv);
+                    });
+                } else {
+                    const limpioDiv = document.createElement('div');
+                    limpioDiv.className = 'comparison-item cleaned';
+                    limpioDiv.innerHTML = `
+                        <div class="label">✅ Limpio (${resultado.numero}):</div>
+                        <div class="text">${resultado.limpio}</div>
+                    `;
+                    itemDiv.appendChild(limpioDiv);
+                }
+                
+                comparisonDiv.appendChild(itemDiv);
+            });
+            
+            comparisonDiv.style.display = 'block';
+        }
+
+        function copiarResultado() {
+            const outputText = document.getElementById('outputText');
+            
+            if (!outputText.value.trim()) {
+                mostrarAlerta('⚠️ No hay resultados para copiar. Primero procesa algunos medicamentos.', 'warning');
+                return;
+            }
+            
+            outputText.select();
+            document.execCommand('copy');
+            
+            mostrarAlerta('✅ ¡Texto copiado al portapapeles! Ya puedes pegarlo en tu aplicativo.', 'success');
+        }
+
+        function limpiarTodo() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+            document.getElementById('stats').style.display = 'none';
+            document.getElementById('comparison').style.display = 'none';
+            
+            const alertBox = document.getElementById('alertBox');
+            alertBox.classList.remove('show');
+            
+            mostrarAlerta('🗑️ Todo limpiado. Puedes empezar de nuevo.', 'info');
+        }
+
+        function cargarEjemplo() {
+            const ejemplo = `PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABLETA RECUBIERTA CAJA POR 2 TABLETAS EN BLISTER AL / PVDC
+MELOXICAM Y COMBINACIONES 20 mg CAPSULA DURA CAPSULA DURA MUESTRA MEDICA: CAJA POR 4 CAPSULAS EN BLISTER DE PVC-PVDC/APARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABLETA RECUBIERTA CAJA POR 2 TABLETAS EN BLISTER AL / PVDCLUMINIO+BOLSA SACHET.
+ETANOL 73.7 mL. 100ML SOLUCION TOPICA FRASCO DE VIDRIO TIPO III POR 360 ML.`;
+            
+            document.getElementById('inputText').value = ejemplo;
+            mostrarAlerta('💡 Ejemplo cargado. Haz clic en "Procesar" para ver cómo funciona.', 'info');
+        }
+
+        // Atajos de teclado
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + Enter para procesar
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                procesarMedicamentos();
+            }
+            
+            // Ctrl + L para limpiar
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                limpiarTodo();
+            }
+        });
+    </script>
+</body>
+</html>
