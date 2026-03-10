@@ -237,6 +237,7 @@
             transform: none !important;
         }
 
+        /* Animación de pulso para el botón procesar */
         @keyframes pulse {
             0% {
                 box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
@@ -253,6 +254,7 @@
             animation: pulse 2s infinite;
         }
 
+        /* Efecto de éxito en botón copiar */
         @keyframes success {
             0% {
                 transform: translateY(-3px) scale(1.02);
@@ -269,6 +271,7 @@
             animation: success 0.4s ease-out;
         }
 
+        /* Spinner de carga */
         .btn-loading {
             pointer-events: none;
             position: relative;
@@ -297,6 +300,7 @@
             visibility: hidden;
         }
 
+        /* Animación de sacudida para errores */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
@@ -316,6 +320,7 @@
             box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
         }
 
+        /* Animación de entrada para estadísticas */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -572,15 +577,27 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
     </div>
 
     <script>
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCIONES MEJORADAS DE LIMPIEZA Y NORMALIZACIÓN
+        // ═══════════════════════════════════════════════════════════════
+
         function normalizarTexto(texto) {
             if (!texto) return "";
+            
+            // Normalizar espacios múltiples
             texto = texto.replace(/\s+/g, ' ');
+            
+            // Eliminar espacios antes/después
             texto = texto.trim();
+            
             return texto;
         }
 
         function normalizarMayusculas(texto) {
+            // Convertir todo a mayúsculas primero
             texto = texto.toUpperCase();
+            
+            // Patrones que deben mantener formato específico
             const patronesEspeciales = [
                 { pattern: /\bMG\b/g, replacement: 'mg' },
                 { pattern: /\bML\b/g, replacement: 'mL' },
@@ -589,23 +606,38 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 { pattern: /\bG\b(?!\s*\/)/g, replacement: 'g' },
                 { pattern: /\b%\b/g, replacement: '%' }
             ];
+            
             patronesEspeciales.forEach(p => {
                 texto = texto.replace(p.pattern, p.replacement);
             });
+            
             return texto;
         }
 
         function corregirEspaciado(texto) {
+            // Espacios antes de unidades de medida
             texto = texto.replace(/(\d+)\s*(mg|mL|g|mcg|UI|%)/gi, '$1 $2');
+            
+            // Sin espacio extra antes de puntuación
             texto = texto.replace(/\s+([,.;:])/g, '$1');
+            
+            // Espacio después de puntuación (excepto en abreviaturas)
             texto = texto.replace(/([,.;:])(?!\s)/g, '$1 ');
+            
+            // Espacios alrededor de "/"
             texto = texto.replace(/\s*\/\s*/g, '/');
+            
+            // Espacios en "CAJA POR"
             texto = texto.replace(/CAJA\s*POR/gi, 'CAJA POR');
+            
+            // Espacios en "EN BLISTER"
             texto = texto.replace(/EN\s*BLISTER/gi, 'EN BLISTER');
+            
             return texto;
         }
 
         function normalizarParaComparar(texto) {
+            // Normalizar para comparación: sin tildes, sin Ñ, mayúsculas
             return texto
                 .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                 .replace(/Ñ/g, 'N')
@@ -613,10 +645,13 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
         }
 
         function separarPalabrasPegadas(texto) {
+            // Separar palabras comunes pegadas
             const patrones = [
                 { regex: /SIN\s*DATO?X?/gi, replacement: ' SIN DATO' },
                 { regex: /SIN\s*DATO?C\/U/gi, replacement: ' SIN DATO C/U' },
                 { regex: /(\w+)(SIN\s*DATO)/gi, replacement: '$1 SIN DATO' },
+                { regex: /(SIN\s+DATO)([A-ZÁÉÍÓÚÑ])/g, replacement: '$1 $2' },
+                { regex: /(DATO)([A-ZÁÉÍÓÚÑ])/g, replacement: '$1 $2' },
                 { regex: /(ALUMINIO)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(CAPSULAS?)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(TABLETAS?)(SIN)/gi, replacement: '$1 SIN' },
@@ -624,30 +659,46 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 { regex: /(PVC\/PVDC\/ALUMINIO)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(\d+)(CAPSULAS?)/gi, replacement: '$1 CAPSULAS' },
                 { regex: /(\d+)(TABLETAS?)/gi, replacement: '$1 TABLETAS' },
+                { regex: /(\d)(C\d{7,})/g, replacement: '$1 $2' },
                 { regex: /(CAJA)(POR)/gi, replacement: '$1 POR' },
-                { regex: /(EN)(BLISTER)/gi, replacement: '$1 BLISTER' }
+                { regex: /(EN)(BLISTER)/gi, replacement: '$1 BLISTER' },
+                { regex: /([A-ZÁÉÍÓÚÑ])(\d{2,})/g, replacement: '$1 $2' },
+                { regex: /(\d{2,})([A-ZÁÉÍÓÚÑ])/g, replacement: '$1 $2' }
             ];
+            
             patrones.forEach(p => {
                 texto = texto.replace(p.regex, p.replacement);
             });
+            
+            // Normalizar múltiples espacios
             texto = texto.replace(/\s+/g, ' ').trim();
+            
             return texto;
         }
 
         function eliminarDuplicadosConsecutivos(texto) {
             if (!texto) return "";
+            
+            // Primero separar palabras pegadas
             texto = separarPalabrasPegadas(texto);
+            
             const palabras = texto.split(' ');
             const resultado = [];
             let i = 0;
+            
             while (i < palabras.length) {
                 let encontrado = false;
-                for (let longitud = Math.min(20, palabras.length - i); longitud > 0; longitud--) {
+                
+                // Probar patrones largos para soportar descripciones extensas
+                for (let longitud = Math.min(60, palabras.length - i); longitud > 0; longitud--) {
                     if (i + longitud * 2 <= palabras.length) {
                         const patron = palabras.slice(i, i + longitud);
                         const siguiente = palabras.slice(i + longitud, i + longitud * 2);
+                        
+                        // Comparar ignorando tildes y mayúsculas
                         const patronNorm = patron.map(p => normalizarParaComparar(p));
                         const siguienteNorm = siguiente.map(s => normalizarParaComparar(s));
+                        
                         if (JSON.stringify(patronNorm) === JSON.stringify(siguienteNorm)) {
                             resultado.push(...patron);
                             i += longitud * 2;
@@ -656,16 +707,19 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         }
                     }
                 }
+                
                 if (!encontrado) {
                     resultado.push(palabras[i]);
                     i++;
                 }
             }
+            
             return resultado.join(' ');
         }
 
         function corregirFormatos(texto) {
             const correcciones = {
+                // Correcciones de empaque
                 'PVDCLUMINIO': 'PVDC/ALUMINIO',
                 'PVDC/PVDC/': 'PVDC/',
                 'PVC-PVDC/A': 'PVC-PVDC/ALUMINIO',
@@ -675,44 +729,67 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 'AL/ PVDC': 'AL/PVDC',
                 'AL /PVDC': 'AL/PVDC',
                 'AL/  PVDC': 'AL/PVDC',
+                
+                // Correcciones de presentación
                 'MUESTRA MEDICA:': 'MUESTRA MEDICA',
                 'MUESTRA MEDICA :': 'MUESTRA MEDICA',
+                
+                // Correcciones de formatos farmacéuticos
                 'CAPSULA DURA': 'CAPSULA DURA',
                 'CAPSULA BLANDA': 'CAPSULA BLANDA',
                 'TABLETA RECUBIERTA': 'TABLETA RECUBIERTA',
                 'SOLUCION TOPICA': 'SOLUCION TOPICA',
                 'SOLUCION INYECTABLE': 'SOLUCION INYECTABLE',
+                
+                // Correcciones específicas
                 '/APARACETAMOL': ' PARACETAMOL',
                 'PVDC/APARA': 'PVDC/ALUMINIO PARA',
+                
+                // Limpiar SIN DATO mal formateados
                 'SIN DATOX': 'SIN DATO',
                 'SIN DATOC/U': 'SIN DATO',
                 'SINDATO': 'SIN DATO',
                 'SINDATOX': 'SIN DATO',
                 'SINDATOC/U': 'SIN DATO',
+                
+                // Espaciado
                 '  /': ' /',
                 '/  ': '/ ',
                 '+ ': ' + ',
                 ' +': ' + ',
                 '  ': ' '
             };
+            
             for (const [error, correccion] of Object.entries(correcciones)) {
                 const regex = new RegExp(error.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
                 texto = texto.replace(regex, correccion);
             }
+            
             return texto;
         }
 
         function separarMedicamentosConcatenados(texto) {
             const medicamentos = [];
+            
+            // Buscar patrones de códigos CUM - CORREGIDO MARZO 2026
+            // Problema anterior: perdía el primer medicamento y mezclaba datos
+            // Solución: usar split para separar correctamente por códigos CUM
             const regex = /(\d{7,}-\d)/;
             const partes = texto.split(regex);
             
             if (partes.length > 2) {
+                // partes[0] = texto antes del primer código
+                // partes[1] = primer código CUM
+                // partes[2] = texto entre primer y segundo código
+                // partes[3] = segundo código CUM, etc.
+                
                 let medicamento = "";
                 for (let i = 0; i < partes.length; i++) {
                     if (i % 2 === 0) {
+                        // Es texto (no es código CUM)
                         medicamento += partes[i];
                     } else {
+                        // Es código CUM - marca el final de un medicamento
                         medicamento += partes[i];
                         if (medicamento.trim()) {
                             medicamentos.push(medicamento.trim());
@@ -720,14 +797,18 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         medicamento = "";
                     }
                 }
+                
+                // Agregar cualquier texto restante
                 if (medicamento.trim()) {
                     medicamentos.push(medicamento.trim());
                 }
+                
                 if (medicamentos.length > 1) {
                     return medicamentos;
                 }
             }
             
+            // Buscar por principios activos repetidos
             const principioActivoRegex = /\b[A-Z]{4,}[A-Z\s]+(?:Y COMBINACIONES|COMBINACIONES)\s+(?:EXCLUYENDO\s+\w+\s+)?\d+\s*(?:mg|mL|g|mcg|UI|%)/g;
             const principios = texto.match(principioActivoRegex);
             
@@ -753,51 +834,86 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
 
         function limpiarNombreMedicamento(texto) {
             if (!texto || texto.trim() === "") return "";
+            
             let original = texto;
             let correcciones = 0;
+            
+            // 1. Normalizar espacios básicos
             texto = normalizarTexto(texto);
             if (texto !== original) correcciones++;
+            
+            // 2. Eliminar duplicados consecutivos
             let temp = texto;
             texto = eliminarDuplicadosConsecutivos(texto);
             if (texto !== temp) correcciones++;
+            
+            // 3. Normalizar mayúsculas/minúsculas
             temp = texto;
             texto = normalizarMayusculas(texto);
             if (texto !== temp) correcciones++;
+            
+            // 4. Corregir espaciado
             temp = texto;
             texto = corregirEspaciado(texto);
             if (texto !== temp) correcciones++;
+            
+            // 5. Corregir formatos específicos
             temp = texto;
             texto = corregirFormatos(texto);
             if (texto !== temp) correcciones++;
+            
+            // 6. Normalización final
             texto = normalizarTexto(texto);
+            
+            // 7. Eliminar puntos finales innecesarios
             texto = texto.replace(/\.\s*$/, '');
+            
             return { texto, correcciones };
         }
 
         function detectarConcatenaciones(texto) {
+            // Detectar múltiples códigos CUM
             const cumMatches = texto.match(/\d{7,}-\d/g);
             if (cumMatches && cumMatches.length > 1) {
                 return true;
             }
+            
+            // Detectar principios activos repetidos
             const principioActivoMatches = texto.match(/\b[A-Z]{4,}[A-Z\s]+(?:Y COMBINACIONES|COMBINACIONES)\s+(?:EXCLUYENDO\s+\w+\s+)?\d+\s*(?:mg|mL|g|mcg|UI|%)/g);
             if (principioActivoMatches && principioActivoMatches.length > 1) {
                 return true;
             }
+            
             return false;
         }
 
         function procesarLoteMedicamentos(textoEntrada) {
-            const lineas = textoEntrada.trim().split('\n');
+            const lineas = textoEntrada.split(/\r?\n/);
             const resultados = [];
             let totalCorrecciones = 0;
             
-            lineas.forEach((linea, idx) => {
-                linea = linea.trim();
-                if (!linea) return;
+            lineas.forEach((lineaOriginal, idx) => {
+                const esVacia = lineaOriginal.trim() === '';
+                if (esVacia) {
+                    resultados.push({
+                        numero: idx + 1,
+                        original: lineaOriginal,
+                        tipo: 'VACIO',
+                        limpio: lineaOriginal,
+                        correcciones: 0
+                    });
+                    return;
+                }
+
+                const espaciosInicio = (lineaOriginal.match(/^\s*/) || [''])[0];
+                const espaciosFinal = (lineaOriginal.match(/\s*$/) || [''])[0];
+                const linea = lineaOriginal.trim();
+                
                 const tieneConcatenaciones = detectarConcatenaciones(linea);
                 
                 if (tieneConcatenaciones) {
                     const medicamentosSeparados = separarMedicamentosConcatenados(linea);
+                    
                     if (medicamentosSeparados.length > 1) {
                         const medicamentosLimpios = medicamentosSeparados.map(m => {
                             const result = limpiarNombreMedicamento(m);
@@ -806,9 +922,9 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         });
                         resultados.push({
                             numero: idx + 1,
-                            original: linea,
+                            original: lineaOriginal,
                             tipo: 'MULTIPLE',
-                            limpios: medicamentosLimpios,
+                            limpios: medicamentosLimpios.map(m => `${espaciosInicio}${m}${espaciosFinal}`),
                             correcciones: medicamentosLimpios.length - 1
                         });
                     } else {
@@ -816,9 +932,9 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         totalCorrecciones += result.correcciones;
                         resultados.push({
                             numero: idx + 1,
-                            original: linea,
+                            original: lineaOriginal,
                             tipo: 'UNICO',
-                            limpio: result.texto,
+                            limpio: `${espaciosInicio}${result.texto}${espaciosFinal}`,
                             correcciones: result.correcciones
                         });
                     }
@@ -827,9 +943,9 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                     totalCorrecciones += result.correcciones;
                     resultados.push({
                         numero: idx + 1,
-                        original: linea,
+                        original: lineaOriginal,
                         tipo: 'UNICO',
-                        limpio: result.texto,
+                        limpio: `${espaciosInicio}${result.texto}${espaciosFinal}`,
                         correcciones: result.correcciones
                     });
                 }
@@ -842,6 +958,7 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             const alertBox = document.getElementById('alertBox');
             alertBox.className = `alert alert-${tipo} show`;
             alertBox.textContent = mensaje;
+            
             setTimeout(() => {
                 alertBox.classList.remove('show');
             }, 5000);
@@ -851,43 +968,56 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             const inputText = document.getElementById('inputText').value;
             const btnProcesar = document.querySelector('.btn-process');
             
-            if (!inputText.trim()) {
+            const tieneDescripcion = inputText.split(/\r?\n/).some(linea => linea.trim() !== '');
+            if (!tieneDescripcion) {
                 mostrarAlerta('⚠️ Por favor, ingresa al menos un nombre de medicamento.', 'warning');
+                // Shake effect para el botón
                 btnProcesar.style.animation = 'shake 0.5s';
                 setTimeout(() => btnProcesar.style.animation = '', 500);
                 return;
             }
             
+            // Añadir estado de carga
             btnProcesar.classList.add('btn-loading');
             btnProcesar.disabled = true;
             
+            // Simular procesamiento asíncrono para mejor UX
             setTimeout(() => {
                 const { resultados, totalCorrecciones } = procesarLoteMedicamentos(inputText);
-                const textosSalida = [];
-                
-                resultados.forEach(resultado => {
-                    if (resultado.tipo === 'MULTIPLE') {
-                        textosSalida.push(...resultado.limpios);
-                    } else {
-                        textosSalida.push(resultado.limpio);
-                    }
-                });
-                
-                const outputText = textosSalida.join('\n');
-                document.getElementById('outputText').value = outputText;
-                
-                document.getElementById('statOriginal').textContent = resultados.length;
-                document.getElementById('statProcesados').textContent = textosSalida.length;
-                document.getElementById('statCorrecciones').textContent = totalCorrecciones;
-                document.getElementById('stats').style.display = 'grid';
-                
+            
+            // Construir salida
+            const textosSalida = [];
+            
+            resultados.forEach(resultado => {
+                if (resultado.tipo === 'MULTIPLE') {
+                    textosSalida.push(...resultado.limpios);
+                } else if (resultado.tipo === 'VACIO') {
+                    textosSalida.push(resultado.limpio);
+                } else {
+                    textosSalida.push(resultado.limpio);
+                }
+            });
+            
+            const outputText = textosSalida.join('\n');
+            document.getElementById('outputText').value = outputText;
+
+            const totalEntradas = resultados.filter(r => r.tipo !== 'VACIO').length;
+            
+            // Actualizar estadísticas
+            document.getElementById('statOriginal').textContent = totalEntradas;
+            document.getElementById('statProcesados').textContent = textosSalida.filter(t => t.trim() !== '').length;
+            document.getElementById('statCorrecciones').textContent = totalCorrecciones;
+            document.getElementById('stats').style.display = 'grid';
+            
+                // Mostrar comparación
                 mostrarComparacion(resultados);
                 
+                // Remover estado de carga
                 btnProcesar.classList.remove('btn-loading');
                 btnProcesar.disabled = false;
                 
-                mostrarAlerta(`✅ ¡Procesamiento completado! ${textosSalida.length} medicamentos normalizados con ${totalCorrecciones} correcciones.`, 'success');
-            }, 800);
+                mostrarAlerta(`✅ ¡Procesamiento completado! ${totalEntradas} entradas procesadas con ${totalCorrecciones} correcciones.`, 'success');
+            }, 800); // Retraso de 800ms para mostrar el efecto de loading
         }
 
         function mostrarComparacion(resultados) {
@@ -895,6 +1025,8 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             comparisonDiv.innerHTML = '<h3 style="color: #667eea; margin-bottom: 15px;">📊 Comparación Detallada:</h3>';
             
             resultados.forEach(resultado => {
+                if (resultado.tipo === 'VACIO') return;
+
                 const itemDiv = document.createElement('div');
                 itemDiv.style.marginBottom = '20px';
                 
@@ -946,6 +1078,7 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             outputText.select();
             document.execCommand('copy');
             
+            // Efecto visual de éxito
             btnCopiar.classList.add('copied');
             const originalText = btnCopiar.innerHTML;
             btnCopiar.innerHTML = '<span>✅ ¡Copiado!</span>';
@@ -960,6 +1093,8 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
 
         function limpiarTodo() {
             const btnLimpiar = document.querySelector('.btn-clear');
+            
+            // Efecto de loading breve
             btnLimpiar.classList.add('btn-loading');
             
             setTimeout(() => {
@@ -983,12 +1118,14 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
 MELOXICAM Y COMBINACIONES 20 mg CAPSULA DURA CAPSULA DURA MUESTRA MEDICA: CAJA POR 4 CAPSULAS EN BLISTER DE PVC-PVDC/APARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABLETA RECUBIERTA CAJA POR 2 TABLETAS EN BLISTER AL / PVDCLUMINIO+BOLSA SACHET.
 ETANOL 73.7 mL. 100ML SOLUCION TOPICA FRASCO DE VIDRIO TIPO III POR 360 ML.`;
             
+            // Efecto de loading breve
             btnEjemplo.classList.add('btn-loading');
             
             setTimeout(() => {
                 document.getElementById('inputText').value = ejemplo;
                 btnEjemplo.classList.remove('btn-loading');
                 
+                // Efecto de highlight en el textarea
                 const inputTextarea = document.getElementById('inputText');
                 inputTextarea.style.borderColor = '#ffc107';
                 inputTextarea.style.boxShadow = '0 0 20px rgba(255, 193, 7, 0.5)';
@@ -1002,11 +1139,15 @@ ETANOL 73.7 mL. 100ML SOLUCION TOPICA FRASCO DE VIDRIO TIPO III POR 360 ML.`;
             }, 300);
         }
 
+        // Atajos de teclado
         document.addEventListener('keydown', function(e) {
+            // Ctrl + Enter para procesar
             if (e.ctrlKey && e.key === 'Enter') {
                 e.preventDefault();
                 procesarMedicamentos();
             }
+            
+            // Ctrl + L para limpiar
             if (e.ctrlKey && e.key === 'l') {
                 e.preventDefault();
                 limpiarTodo();
