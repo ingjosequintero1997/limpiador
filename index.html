@@ -520,6 +520,141 @@
             line-height: 1.6;
         }
 
+        .express-flow {
+            background: linear-gradient(135deg, #eaf8ff 0%, #f3fbff 100%);
+            border: 1px solid #bfe7ff;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+
+        .express-flow h3 {
+            color: #0b5fa5;
+            margin-bottom: 8px;
+        }
+
+        .express-flow p {
+            color: #1f3f5b;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+
+        .express-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .tutorial-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .tutorial-step {
+            background: #ffffff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .tutorial-step .num {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #1d4ed8;
+            background: #dbeafe;
+            margin-bottom: 6px;
+        }
+
+        .tutorial-step .txt {
+            color: #1f3f5b;
+            font-size: 0.9em;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .step-title {
+            font-size: 0.92em;
+            font-weight: 700;
+        }
+
+        .btn-install {
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-install:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(14, 116, 144, 0.35);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        .bookmark-drag {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px dashed #60a5fa;
+            background: #ffffff;
+            color: #1d4ed8;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .bookmark-drag:hover {
+            background: #eff6ff;
+        }
+
+        @media (max-width: 900px) {
+            .tutorial-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #bfdbfe;
+        }
+
+        .mode-label {
+            font-size: 0.9em;
+            color: #1e3a5f;
+            font-weight: 700;
+        }
+
+        .mode-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.85em;
+            font-weight: 700;
+        }
+
+        body.modo-basico .instructions,
+        body.modo-basico .grid,
+        body.modo-basico .buttons,
+        body.modo-basico .review-toolbar,
+        body.modo-basico #stats,
+        body.modo-basico #qualityBoard,
+        body.modo-basico #comparison {
+            display: none !important;
+        }
+
         .review-toolbar {
             margin-top: 16px;
             display: flex;
@@ -753,6 +888,38 @@
                     <li><strong>Copia</strong> los resultados limpios para pegarlos en INVIMA</li>
                     <li>El sistema elimina duplicados, ajusta espacios, normaliza mayúsculas y corrige formatos</li>
                 </ul>
+            </div>
+
+            <div class="express-flow">
+                <h3>⚡ Flujo Express para compañeros</h3>
+                <p>Una sola instalación y luego uso diario en 2 clics: abrir monitor y ejecutar Auto-20.</p>
+                <div class="tutorial-strip">
+                    <div class="tutorial-step">
+                        <span class="num">PASO 1</span>
+                        <div class="txt">Instala Auto-20 una sola vez.</div>
+                    </div>
+                    <div class="tutorial-step">
+                        <span class="num">PASO 2</span>
+                        <div class="txt">Abre Monitor Dusakawi y carga los CUM.</div>
+                    </div>
+                    <div class="tutorial-step">
+                        <span class="num">PASO 3</span>
+                        <div class="txt">Haz clic al favorito Auto-20 dentro del monitor.</div>
+                    </div>
+                </div>
+                <div class="express-buttons">
+                    <button class="btn-install" type="button" onclick="instalarAuto20Facil()"><span class="step-title">PASO 1 · Instalar Auto-20</span></button>
+                    <button class="btn-paste" type="button" onclick="abrirDusakawiMonitor()"><span class="step-title">PASO 2 · Abrir Monitor Dusakawi</span></button>
+                    <a id="bookmarkAuto20" class="bookmark-drag" href="#">PASO 3 · Arrastrar a favoritos (Auto-20)</a>
+                </div>
+                <div class="mode-toggle">
+                    <div class="mode-label">Modo simple activo para uso diario del equipo</div>
+                    <label class="toggle-switch" for="basicModeToggle">
+                        <input type="checkbox" id="basicModeToggle" checked>
+                        Mostrar herramientas avanzadas
+                    </label>
+                    <span id="modePill" class="mode-pill">MODO COMPANEROS</span>
+                </div>
             </div>
 
             <div id="alertBox" class="alert"></div>
@@ -1811,9 +1978,60 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                         `.trim();
                 }
 
+        function generarBookmarkletDusakawi() {
+            const script = obtenerScriptAutomatizadorDusakawi();
+            return `javascript:${encodeURIComponent(script)}`;
+        }
+
+        function actualizarEnlaceAuto20() {
+            const link = document.getElementById('bookmarkAuto20');
+            if (!link) return;
+
+            link.href = generarBookmarkletDusakawi();
+            link.title = 'Arrastra este botón a tu barra de marcadores';
+        }
+
+        async function instalarAuto20Facil() {
+            const bookmarklet = generarBookmarkletDusakawi();
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(bookmarklet);
+                    mostrarAlerta('✅ Auto-20 copiado. Ahora crea un favorito y pega lo copiado en la URL del favorito.', 'success');
+                    return;
+                } catch (error) {
+                    mostrarAlerta('⚠️ No se pudo copiar automático. Usa el botón arrastrable a favoritos.', 'warning');
+                    return;
+                }
+            }
+
+            mostrarAlerta('⚠️ Tu navegador no permitió copiar. Usa el botón arrastrable a favoritos.', 'warning');
+        }
+
+        function abrirDusakawiMonitor() {
+            window.open('https://proyecto-dusakawi-p7m3.vercel.app/tools/medication-checker', '_blank', 'noopener');
+            mostrarAlerta('🚀 Monitor abierto. Carga CUMs y luego haz clic al favorito Auto-20 en esa pestaña.', 'info');
+        }
+
+        function aplicarModoBasico(usarModoBasico) {
+            const pill = document.getElementById('modePill');
+            document.body.classList.toggle('modo-basico', usarModoBasico);
+
+            if (pill) {
+                pill.textContent = usarModoBasico ? 'MODO COMPANEROS' : 'MODO AVANZADO';
+                pill.style.background = usarModoBasico ? '#dbeafe' : '#dcfce7';
+                pill.style.color = usarModoBasico ? '#1d4ed8' : '#166534';
+            }
+
+            try {
+                localStorage.setItem('modoBasicoCompaneros', usarModoBasico ? '1' : '0');
+            } catch (error) {
+                // Sin persistencia si el navegador bloquea localStorage.
+            }
+        }
+
                 async function copiarBookmarkletDusakawi() {
-                        const script = obtenerScriptAutomatizadorDusakawi();
-                        const bookmarklet = `javascript:${encodeURIComponent(script)}`;
+            const bookmarklet = generarBookmarkletDusakawi();
 
                         if (!navigator.clipboard || !navigator.clipboard.writeText) {
                                 mostrarAlerta('⚠️ No se pudo copiar automático. Tu navegador bloquea el portapapeles.', 'warning');
@@ -2014,6 +2232,26 @@ ETANOL 73.7 mL. 100ML SOLUCION TOPICA FRASCO DE VIDRIO TIPO III POR 360 ML.`;
         document.addEventListener('DOMContentLoaded', function() {
             const toggle = document.getElementById('soloCambiosToggle');
             const temaClinicoToggle = document.getElementById('temaClinicoToggle');
+            const basicModeToggle = document.getElementById('basicModeToggle');
+
+            actualizarEnlaceAuto20();
+
+            if (basicModeToggle) {
+                let modoBasicoGuardado = true;
+                try {
+                    const valor = localStorage.getItem('modoBasicoCompaneros');
+                    modoBasicoGuardado = valor === null ? true : valor === '1';
+                } catch (error) {
+                    modoBasicoGuardado = true;
+                }
+
+                basicModeToggle.checked = !modoBasicoGuardado;
+                aplicarModoBasico(modoBasicoGuardado);
+
+                basicModeToggle.addEventListener('change', function() {
+                    aplicarModoBasico(!basicModeToggle.checked);
+                });
+            }
 
             if (toggle) {
                 toggle.addEventListener('change', function() {
