@@ -226,6 +226,17 @@
             background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
         }
 
+        .btn-paste {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+        }
+
+        .btn-paste:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.4);
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        }
+
         button:active {
             transform: translateY(-1px) scale(0.98);
             transition: all 0.1s;
@@ -508,6 +519,221 @@
             margin-bottom: 8px;
             line-height: 1.6;
         }
+
+        .review-toolbar {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #f0f6ff;
+            border: 1px solid #cfe0ff;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #264b96;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle-switch input {
+            width: 18px;
+            height: 18px;
+            accent-color: #4b7bec;
+            cursor: pointer;
+        }
+
+        .review-note {
+            font-size: 0.9em;
+            color: #31507a;
+            font-weight: 600;
+        }
+
+        .review-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mini-btn {
+            border: 1px solid #93c5fd;
+            background: #ffffff;
+            color: #1e40af;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: auto;
+            box-shadow: none;
+            text-transform: none;
+            letter-spacing: 0;
+            flex: 0 0 auto;
+        }
+
+        .mini-btn:hover {
+            background: #dbeafe;
+            border-color: #60a5fa;
+            transform: translateY(-1px);
+        }
+
+        .quality-board {
+            margin-top: 16px;
+            background: linear-gradient(135deg, #fdf7e7 0%, #eef9ff 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .quality-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .quality-title {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .semaforo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .risk-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #9ca3af;
+            box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.2);
+        }
+
+        .risk-dot.alto {
+            background: #ef4444;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+        }
+
+        .risk-dot.medio {
+            background: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+        }
+
+        .risk-dot.bajo {
+            background: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+        }
+
+        .quality-meter {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .quality-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #22c55e 100%);
+            transition: width 0.5s ease;
+        }
+
+        .quality-summary {
+            color: #334155;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .suspicious-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            max-height: 160px;
+            overflow: auto;
+        }
+
+        .suspicious-list li {
+            border-left: 4px solid #f59e0b;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .comparison-item.suspicious {
+            border-left-color: #f59e0b;
+            background: #fff9ef;
+        }
+
+        .comparison-item.suspicious .label {
+            color: #b45309;
+        }
+
+        body.theme-clinico {
+            background: linear-gradient(135deg, #dfe8ee 0%, #c7d4df 100%);
+        }
+
+        body.theme-clinico .container {
+            box-shadow: 0 20px 50px rgba(24, 44, 66, 0.25);
+        }
+
+        body.theme-clinico .header {
+            background: linear-gradient(135deg, #355c7d 0%, #2a4d69 100%);
+        }
+
+        body.theme-clinico .instructions {
+            background: #edf4fa;
+            border-left-color: #3f6b8f;
+        }
+
+        body.theme-clinico .instructions h3,
+        body.theme-clinico .panel h2 {
+            color: #355c7d;
+        }
+
+        body.theme-clinico .panel:hover {
+            border-color: #3f6b8f;
+        }
+
+        body.theme-clinico .stats {
+            background: linear-gradient(135deg, #4f6d7a 0%, #2f3e46 100%);
+            box-shadow: 0 10px 30px rgba(47, 62, 70, 0.3);
+        }
+
+        body.theme-clinico .review-toolbar {
+            background: #ecf2f7;
+            border-color: #c2d3e0;
+        }
+
+        body.theme-clinico .toggle-switch,
+        body.theme-clinico .review-note {
+            color: #2a4d69;
+        }
+
+        body.theme-clinico .quality-board {
+            background: linear-gradient(135deg, #f4f7f9 0%, #e8f0f5 100%);
+        }
     </style>
 </head>
 <body>
@@ -522,6 +748,7 @@
                 <h3>📖 Instrucciones de Uso:</h3>
                 <ul>
                     <li><strong>Pega</strong> los nombres de medicamentos en el área de entrada</li>
+                    <li><strong>Tip rápido:</strong> usa "Pegar y Procesar" para hacerlo en un solo clic desde el portapapeles</li>
                     <li><strong>Haz clic</strong> en "Procesar" para normalizarlos automáticamente</li>
                     <li><strong>Copia</strong> los resultados limpios para pegarlos en INVIMA</li>
                     <li>El sistema elimina duplicados, ajusta espacios, normaliza mayúsculas y corrige formatos</li>
@@ -546,10 +773,28 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             </div>
 
             <div class="buttons">
+                <button class="btn-paste" onclick="pegarDesdePortapapelesYProcesar()"><span>📥 Pegar y Procesar</span></button>
                 <button class="btn-process" onclick="procesarMedicamentos()"><span>🚀 Procesar</span></button>
                 <button class="btn-copy" onclick="copiarResultado()"><span>📋 Copiar Resultado</span></button>
                 <button class="btn-clear" onclick="limpiarTodo()"><span>🗑️ Limpiar Todo</span></button>
                 <button class="btn-example" onclick="cargarEjemplo()"><span>💡 Cargar Ejemplo</span></button>
+            </div>
+
+            <div class="review-toolbar" id="reviewToolbar" style="display: none;">
+                <label class="toggle-switch" for="soloCambiosToggle">
+                    <input type="checkbox" id="soloCambiosToggle">
+                    Mostrar solo líneas con cambios
+                </label>
+                <div class="review-actions">
+                    <button class="mini-btn" type="button" onclick="exportarReporteCalidad('txt')">Descargar TXT</button>
+                    <button class="mini-btn" type="button" onclick="exportarReporteCalidad('csv')">Descargar CSV</button>
+                    <button class="mini-btn" type="button" onclick="copiarBookmarkletDusakawi()">Copiar Auto-20 Dusakawi</button>
+                    <label class="toggle-switch" for="temaClinicoToggle">
+                        <input type="checkbox" id="temaClinicoToggle">
+                        Tema clínico
+                    </label>
+                    <div class="review-note" id="reviewNote">Revisión activa</div>
+                </div>
             </div>
 
             <div class="stats" id="stats" style="display: none;">
@@ -565,6 +810,25 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                     <div class="stat-value" id="statCorrecciones">0</div>
                     <div class="stat-label">Correcciones</div>
                 </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statCalidad">0%</div>
+                    <div class="stat-label">Calidad</div>
+                </div>
+            </div>
+
+            <div class="quality-board" id="qualityBoard" style="display: none;">
+                <div class="quality-top">
+                    <div class="quality-title">Control de calidad del lote</div>
+                    <div class="semaforo">
+                        <span id="riskDot" class="risk-dot"></span>
+                        <span id="riskLabel">Sin evaluar</span>
+                    </div>
+                </div>
+                <div class="quality-meter">
+                    <div id="qualityFill" class="quality-fill"></div>
+                </div>
+                <div id="qualitySummary" class="quality-summary">Procesa un lote para ver el resumen de calidad.</div>
+                <ul id="suspiciousList" class="suspicious-list"></ul>
             </div>
 
             <div id="comparison" class="comparison" style="display: none;"></div>
@@ -580,6 +844,9 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
         // ═══════════════════════════════════════════════════════════════
         // FUNCIONES MEJORADAS DE LIMPIEZA Y NORMALIZACIÓN
         // ═══════════════════════════════════════════════════════════════
+
+        let ultimoResultados = [];
+        let ultimoDiagnostico = null;
 
         function normalizarTexto(texto) {
             if (!texto) return "";
@@ -644,18 +911,80 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 .toUpperCase();
         }
 
+        function normalizarFragmentosProblematicos(texto) {
+            if (!texto) return "";
+
+            texto = separarPalabrasPegadas(texto);
+
+            const reemplazos = [
+                { regex: /\bSINDATO(?:X|C\/U)?\b/gi, replacement: 'SIN DATO' },
+                { regex: /\bSIN\s*DATO(?:X|C\/U)?\b/gi, replacement: 'SIN DATO' },
+                { regex: /\bSIN\s+DATO\s+(?:X|C\/U|\d+)\s+SIN\s+DATO\b/gi, replacement: 'SIN DATO' },
+                { regex: /\bSIN\s+DATO\s+(?:X|C\/U)\b/gi, replacement: 'SIN DATO' },
+                { regex: /\bDATO\s*(\d+)\s*SIN\b/gi, replacement: 'DATO SIN' },
+                { regex: /\bSIN\s+DATO\s+\d+(?=\s+SIN\s+DATO\b)/gi, replacement: 'SIN DATO' },
+                { regex: /\bSIN\s+DATO(?:\s+SIN\s+DATO)+\b/gi, replacement: 'SIN DATO' }
+            ];
+
+            reemplazos.forEach(patron => {
+                texto = texto.replace(patron.regex, patron.replacement);
+            });
+
+            const palabras = texto.split(/\s+/).filter(Boolean);
+            const resultado = [];
+
+            for (let i = 0; i < palabras.length; i++) {
+                const actual = palabras[i];
+                const actualNorm = normalizarParaComparar(actual);
+                const siguiente = palabras[i + 1] || '';
+                const siguienteNorm = normalizarParaComparar(siguiente);
+                const ultimo = resultado[resultado.length - 1] || '';
+                const ultimoNorm = normalizarParaComparar(ultimo);
+                const penultimo = resultado[resultado.length - 2] || '';
+                const penultimoNorm = normalizarParaComparar(penultimo);
+                const esSinDato = actualNorm === 'SIN' && siguienteNorm === 'DATO';
+                const siguienteEsSinDato = normalizarParaComparar(palabras[i + 1] || '') === 'SIN' &&
+                    normalizarParaComparar(palabras[i + 2] || '') === 'DATO';
+
+                if (esSinDato) {
+                    if (!(penultimoNorm === 'SIN' && ultimoNorm === 'DATO')) {
+                        resultado.push('SIN', 'DATO');
+                    }
+                    i++;
+                    continue;
+                }
+
+                if (/^\d+$/.test(actual) && penultimoNorm === 'SIN' && ultimoNorm === 'DATO' && siguienteEsSinDato) {
+                    continue;
+                }
+
+                if (ultimoNorm === actualNorm && !/^\d+$/.test(actual)) {
+                    continue;
+                }
+
+                resultado.push(actual);
+            }
+
+            return resultado.join(' ');
+        }
+
         function separarPalabrasPegadas(texto) {
             // Separar palabras comunes pegadas
             const patrones = [
-                { regex: /SIN\s*DATO?X?/gi, replacement: ' SIN DATO' },
-                { regex: /SIN\s*DATO?C\/U/gi, replacement: ' SIN DATO C/U' },
+                { regex: /SIN\s*DATO\s*C\/U/gi, replacement: ' SIN DATO' },
+                { regex: /SINDATO\s*C\/U/gi, replacement: ' SIN DATO' },
+                { regex: /SIN\s*DATOX?\b/gi, replacement: ' SIN DATO' },
+                { regex: /SINDATOX?\b/gi, replacement: ' SIN DATO' },
                 { regex: /(\w+)(SIN\s*DATO)/gi, replacement: '$1 SIN DATO' },
+                { regex: /(SIN\s+DATO)(\d+)/g, replacement: '$1 $2' },
+                { regex: /(DATO)(\d+)(SIN)/gi, replacement: '$1 $2 $3' },
                 { regex: /(SIN\s+DATO)([A-ZÁÉÍÓÚÑ])/g, replacement: '$1 $2' },
                 { regex: /(DATO)([A-ZÁÉÍÓÚÑ])/g, replacement: '$1 $2' },
                 { regex: /(ALUMINIO)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(CAPSULAS?)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(TABLETAS?)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(BLISTER)(PVC)/gi, replacement: '$1 PVC' },
+                { regex: /(PVC)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(PVC\/PVDC\/ALUMINIO)(SIN)/gi, replacement: '$1 SIN' },
                 { regex: /(\d+)(CAPSULAS?)/gi, replacement: '$1 CAPSULAS' },
                 { regex: /(\d+)(TABLETAS?)/gi, replacement: '$1 TABLETAS' },
@@ -841,31 +1170,46 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             // 1. Normalizar espacios básicos
             texto = normalizarTexto(texto);
             if (texto !== original) correcciones++;
-            
-            // 2. Eliminar duplicados consecutivos
+
+            // 2. Corregir fragmentos pegados y variantes problemáticas
             let temp = texto;
+            texto = normalizarFragmentosProblematicos(texto);
+            if (texto !== temp) correcciones++;
+            
+            // 3. Eliminar duplicados consecutivos
+            temp = texto;
             texto = eliminarDuplicadosConsecutivos(texto);
             if (texto !== temp) correcciones++;
             
-            // 3. Normalizar mayúsculas/minúsculas
+            // 4. Normalizar mayúsculas/minúsculas
             temp = texto;
             texto = normalizarMayusculas(texto);
             if (texto !== temp) correcciones++;
             
-            // 4. Corregir espaciado
+            // 5. Corregir espaciado
             temp = texto;
             texto = corregirEspaciado(texto);
             if (texto !== temp) correcciones++;
             
-            // 5. Corregir formatos específicos
+            // 6. Corregir formatos específicos
             temp = texto;
             texto = corregirFormatos(texto);
             if (texto !== temp) correcciones++;
             
-            // 6. Normalización final
+            // 7. Repetir normalización cuando ya quedaron unificadas las variantes
+            temp = texto;
+            texto = normalizarFragmentosProblematicos(texto);
+            if (texto !== temp) correcciones++;
+
+            // 8. Eliminar duplicados después de corregir formatos
+            temp = texto;
+            texto = eliminarDuplicadosConsecutivos(texto);
+            if (texto !== temp) correcciones++;
+
+            // 9. Normalización final
             texto = normalizarTexto(texto);
             
-            // 7. Eliminar puntos finales innecesarios
+            // 10. Eliminar puntos finales innecesarios
             texto = texto.replace(/\.\s*$/, '');
             
             return { texto, correcciones };
@@ -1002,15 +1346,22 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             document.getElementById('outputText').value = outputText;
 
             const totalEntradas = resultados.filter(r => r.tipo !== 'VACIO').length;
+            const diagnostico = generarDiagnosticoRevision(resultados);
+            ultimoResultados = resultados;
+            ultimoDiagnostico = diagnostico;
             
             // Actualizar estadísticas
             document.getElementById('statOriginal').textContent = totalEntradas;
             document.getElementById('statProcesados').textContent = textosSalida.filter(t => t.trim() !== '').length;
             document.getElementById('statCorrecciones').textContent = totalCorrecciones;
+            document.getElementById('statCalidad').textContent = `${diagnostico.calidad}%`;
             document.getElementById('stats').style.display = 'grid';
+            document.getElementById('reviewToolbar').style.display = 'flex';
+            actualizarPanelCalidad(diagnostico);
             
                 // Mostrar comparación
-                mostrarComparacion(resultados);
+                mostrarComparacion(resultados, diagnostico);
+                enfocarPrimeraSospechosa(diagnostico);
                 
                 // Remover estado de carga
                 btnProcesar.classList.remove('btn-loading');
@@ -1020,12 +1371,493 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
             }, 800); // Retraso de 800ms para mostrar el efecto de loading
         }
 
-        function mostrarComparacion(resultados) {
+        async function pegarDesdePortapapelesYProcesar() {
+            const inputTextArea = document.getElementById('inputText');
+
+            if (!navigator.clipboard || !navigator.clipboard.readText) {
+                mostrarAlerta('⚠️ Tu navegador no permite leer portapapeles automáticamente. Usa Ctrl+V y luego Procesar.', 'warning');
+                inputTextArea.focus();
+                return;
+            }
+
+            try {
+                const texto = await navigator.clipboard.readText();
+
+                if (!texto || !texto.trim()) {
+                    mostrarAlerta('⚠️ El portapapeles está vacío. Copia primero la descripción desde la aplicación.', 'warning');
+                    return;
+                }
+
+                inputTextArea.value = texto;
+                mostrarAlerta('📥 Descripción pegada desde portapapeles. Iniciando procesamiento...', 'info');
+                procesarMedicamentos();
+            } catch (error) {
+                mostrarAlerta('⚠️ No se pudo leer el portapapeles. Revisa permisos del navegador y vuelve a intentar.', 'warning');
+            }
+        }
+
+        function normalizarTextoParaRevision(texto) {
+            if (!texto) return '';
+            return normalizarParaComparar(texto).replace(/\s+/g, ' ').trim();
+        }
+
+        function analizarLineaSospechosa(texto) {
+            const razones = [];
+            const base = normalizarTextoParaRevision(texto);
+
+            if (!base) return razones;
+
+            if (/\bSIN DATO\b.*\bSIN DATO\b/.test(base)) {
+                razones.push('SIN DATO repetido');
+            }
+            if (/\bACLAR\b/.test(base)) {
+                razones.push('Contiene token ACLAR');
+            }
+            if (/\bX\s+SIN DATO\b/.test(base)) {
+                razones.push('Conector X antes de SIN DATO');
+            }
+            if (/\b\d+[A-Z]{2,}\b|\b[A-Z]{3,}\d{2,}\b/.test(base)) {
+                razones.push('Posible texto pegado número/letra');
+            }
+            if (/\bSIN$|\bDATO$/.test(base)) {
+                razones.push('Termina en token incompleto');
+            }
+
+            return razones;
+        }
+
+        function generarDiagnosticoRevision(resultados) {
+            const relevantes = resultados.filter(r => r.tipo !== 'VACIO');
+            let cambios = 0;
+            const sospechosas = [];
+
+            relevantes.forEach(resultado => {
+                const originalNorm = normalizarTextoParaRevision(resultado.original);
+
+                if (resultado.tipo === 'MULTIPLE') {
+                    const combinado = resultado.limpios.join(' | ');
+                    const combinadoNorm = normalizarTextoParaRevision(combinado);
+                    if (combinadoNorm !== originalNorm) {
+                        cambios++;
+                    }
+
+                    resultado.limpios.forEach((lineaLimpia, idx) => {
+                        const razones = analizarLineaSospechosa(lineaLimpia);
+                        if (razones.length > 0) {
+                            sospechosas.push({
+                                key: `${resultado.numero}.${idx + 1}`,
+                                texto: lineaLimpia,
+                                razones
+                            });
+                        }
+                    });
+                } else {
+                    const limpioNorm = normalizarTextoParaRevision(resultado.limpio);
+                    if (limpioNorm !== originalNorm) {
+                        cambios++;
+                    }
+
+                    const razones = analizarLineaSospechosa(resultado.limpio);
+                    if (razones.length > 0) {
+                        sospechosas.push({
+                            key: `${resultado.numero}`,
+                            texto: resultado.limpio,
+                            razones
+                        });
+                    }
+                }
+            });
+
+            const total = relevantes.length;
+            const ratioSospecha = total > 0 ? (sospechosas.length / total) : 0;
+            const calidad = total > 0 ? Math.max(0, Math.round((1 - ratioSospecha) * 100)) : 100;
+
+            let nivel = 'BAJO';
+            if (ratioSospecha > 0.45) {
+                nivel = 'ALTO';
+            } else if (ratioSospecha > 0.2) {
+                nivel = 'MEDIO';
+            }
+
+            return { total, cambios, sospechosas, calidad, nivel };
+        }
+
+        function actualizarPanelCalidad(diagnostico) {
+            const qualityBoard = document.getElementById('qualityBoard');
+            const qualityFill = document.getElementById('qualityFill');
+            const qualitySummary = document.getElementById('qualitySummary');
+            const suspiciousList = document.getElementById('suspiciousList');
+            const riskDot = document.getElementById('riskDot');
+            const riskLabel = document.getElementById('riskLabel');
+            const reviewNote = document.getElementById('reviewNote');
+
+            qualityBoard.style.display = 'block';
+            qualityFill.style.width = `${diagnostico.calidad}%`;
+            qualitySummary.textContent = `Entradas revisadas: ${diagnostico.total} | Con cambios: ${diagnostico.cambios} | Sospechosas: ${diagnostico.sospechosas.length}`;
+            reviewNote.textContent = `Cambios detectados: ${diagnostico.cambios} | Sospechosas: ${diagnostico.sospechosas.length}`;
+
+            riskDot.className = 'risk-dot';
+            riskLabel.textContent = `Riesgo ${diagnostico.nivel}`;
+            if (diagnostico.nivel === 'ALTO') {
+                riskDot.classList.add('alto');
+            } else if (diagnostico.nivel === 'MEDIO') {
+                riskDot.classList.add('medio');
+            } else {
+                riskDot.classList.add('bajo');
+            }
+
+            suspiciousList.innerHTML = '';
+            if (diagnostico.sospechosas.length === 0) {
+                const item = document.createElement('li');
+                item.style.borderLeftColor = '#22c55e';
+                item.textContent = 'Sin líneas sospechosas detectadas.';
+                suspiciousList.appendChild(item);
+                return;
+            }
+
+            diagnostico.sospechosas.slice(0, 8).forEach(s => {
+                const item = document.createElement('li');
+                item.innerHTML = `<strong>Línea ${s.key}:</strong> ${s.razones.join(', ')}<br>${s.texto}`;
+                suspiciousList.appendChild(item);
+            });
+        }
+
+        function enfocarPrimeraSospechosa(diagnostico) {
+            if (!diagnostico || !diagnostico.sospechosas || diagnostico.sospechosas.length === 0) {
+                return;
+            }
+
+            const primerKey = diagnostico.sospechosas[0].key;
+            const nodo = document.querySelector(`[data-line-key="${primerKey}"]`);
+            if (nodo) {
+                nodo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function exportarReporteCalidad(formato = 'txt') {
+            if (!ultimoDiagnostico || !ultimoResultados || ultimoResultados.length === 0) {
+                mostrarAlerta('⚠️ Procesa un lote antes de exportar el reporte.', 'warning');
+                return;
+            }
+
+            const fecha = new Date();
+            const sello = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}_${String(fecha.getHours()).padStart(2, '0')}${String(fecha.getMinutes()).padStart(2, '0')}`;
+
+            let contenido = '';
+            let mime = 'text/plain;charset=utf-8';
+            let extension = 'txt';
+
+            if (formato === 'csv') {
+                extension = 'csv';
+                mime = 'text/csv;charset=utf-8';
+                const filas = ['linea,tipo,estado,observaciones,texto'];
+
+                ultimoResultados
+                    .filter(r => r.tipo !== 'VACIO')
+                    .forEach(r => {
+                        if (r.tipo === 'MULTIPLE') {
+                            r.limpios.forEach((texto, idx) => {
+                                const key = `${r.numero}.${idx + 1}`;
+                                const sospechosa = ultimoDiagnostico.sospechosas.find(s => s.key === key);
+                                const observaciones = sospechosa ? sospechosa.razones.join(' | ') : '';
+                                const estado = sospechosa ? 'SOSPECHOSA' : 'OK';
+                                filas.push(`"${key}","${r.tipo}","${estado}","${observaciones.replace(/"/g, '""')}","${texto.replace(/"/g, '""')}"`);
+                            });
+                        } else {
+                            const key = `${r.numero}`;
+                            const sospechosa = ultimoDiagnostico.sospechosas.find(s => s.key === key);
+                            const observaciones = sospechosa ? sospechosa.razones.join(' | ') : '';
+                            const estado = sospechosa ? 'SOSPECHOSA' : 'OK';
+                            filas.push(`"${key}","${r.tipo}","${estado}","${observaciones.replace(/"/g, '""')}","${r.limpio.replace(/"/g, '""')}"`);
+                        }
+                    });
+
+                contenido = filas.join('\n');
+            } else {
+                const lineas = [];
+                lineas.push('REPORTE DE CALIDAD - LIMPIADOR DE MEDICAMENTOS');
+                lineas.push(`Fecha: ${fecha.toLocaleString()}`);
+                lineas.push(`Entradas revisadas: ${ultimoDiagnostico.total}`);
+                lineas.push(`Con cambios: ${ultimoDiagnostico.cambios}`);
+                lineas.push(`Sospechosas: ${ultimoDiagnostico.sospechosas.length}`);
+                lineas.push(`Calidad: ${ultimoDiagnostico.calidad}%`);
+                lineas.push(`Semáforo: ${ultimoDiagnostico.nivel}`);
+                lineas.push('');
+                lineas.push('DETALLE DE LÍNEAS SOSPECHOSAS');
+
+                if (ultimoDiagnostico.sospechosas.length === 0) {
+                    lineas.push('- Sin líneas sospechosas detectadas.');
+                } else {
+                    ultimoDiagnostico.sospechosas.forEach(s => {
+                        lineas.push(`- Línea ${s.key}: ${s.razones.join(', ')}`);
+                        lineas.push(`  ${s.texto}`);
+                    });
+                }
+
+                contenido = lineas.join('\n');
+            }
+
+            const blob = new Blob([contenido], { type: mime });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `reporte_calidad_${sello}.${extension}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            mostrarAlerta(`✅ Reporte ${extension.toUpperCase()} descargado correctamente.`, 'success');
+        }
+
+                function obtenerScriptAutomatizadorDusakawi() {
+                        return `
+(function () {
+    const LIMITE = 20;
+
+    function normalizarBase(texto) {
+        if (!texto) return '';
+        return texto.replace(/\\s+/g, ' ').trim();
+    }
+
+    function normalizarParaComparar(texto) {
+        return normalizarBase(texto)
+            .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+            .replace(/Ñ/g, 'N')
+            .toUpperCase();
+    }
+
+    function separarPegados(texto) {
+        const reglas = [
+            [/(\\w+)(SIN\\s*DATO)/gi, '$1 SIN DATO'],
+            [/(SIN\\s+DATO)([A-ZÁÉÍÓÚÑ])/g, '$1 $2'],
+            [/(DATO)([A-ZÁÉÍÓÚÑ])/g, '$1 $2'],
+            [/(BLISTER)(PVC)/gi, '$1 PVC'],
+            [/(PVC)(SIN)/gi, '$1 SIN'],
+            [/(ALUMINIO)(SIN)/gi, '$1 SIN'],
+            [/(CAPSULAS?)(SIN)/gi, '$1 SIN'],
+            [/(TABLETAS?)(SIN)/gi, '$1 SIN'],
+            [/(\\d+)(CAPSULAS?)/gi, '$1 CAPSULAS'],
+            [/(\\d+)(TABLETAS?)/gi, '$1 TABLETAS'],
+            [/([A-ZÁÉÍÓÚÑ])(\\d{2,})/g, '$1 $2'],
+            [/(\\d{2,})([A-ZÁÉÍÓÚÑ])/g, '$1 $2'],
+            [/CAJA\\s*POR/gi, 'CAJA POR'],
+            [/EN\\s*BLISTER/gi, 'EN BLISTER']
+        ];
+
+        let salida = texto;
+        reglas.forEach(([regex, rep]) => {
+            salida = salida.replace(regex, rep);
+        });
+        return normalizarBase(salida);
+    }
+
+    function normalizarFragmentos(texto) {
+        let salida = separarPegados(texto);
+        const reglas = [
+            [/\\bSINDATO(?:X|C\\/U)?\\b/gi, 'SIN DATO'],
+            [/\\bSIN\\s*DATO(?:X|C\\/U)?\\b/gi, 'SIN DATO'],
+            [/\\bSIN\\s+DATO\\s+(?:X|C\\/U|\\d+)\\s+SIN\\s+DATO\\b/gi, 'SIN DATO'],
+            [/\\bSIN\\s+DATO(?:\\s+SIN\\s+DATO)+\\b/gi, 'SIN DATO']
+        ];
+        reglas.forEach(([regex, rep]) => {
+            salida = salida.replace(regex, rep);
+        });
+        return normalizarBase(salida);
+    }
+
+    function corregirEspaciado(texto) {
+        return texto
+            .replace(/(\\d+)\\s*(mg|mL|g|mcg|UI|%)/gi, '$1 $2')
+            .replace(/\\s+([,.;:])/g, '$1')
+            .replace(/([,.;:])(?!\\s)/g, '$1 ')
+            .replace(/\\s*\\/\\s*/g, '/')
+            .replace(/\\s+/g, ' ')
+            .trim();
+    }
+
+    function normalizarUnidades(texto) {
+        return texto
+            .toUpperCase()
+            .replace(/\\bMG\\b/g, 'mg')
+            .replace(/\\bML\\b/g, 'mL')
+            .replace(/\\bMCG\\b/g, 'mcg')
+            .replace(/\\bG\\b(?!\\s*\\/)/g, 'g');
+    }
+
+    function eliminarDuplicadosConsecutivos(texto) {
+        const palabras = separarPegados(texto).split(' ').filter(Boolean);
+        const resultado = [];
+        let i = 0;
+
+        while (i < palabras.length) {
+            let encontrado = false;
+            for (let len = Math.min(40, palabras.length - i); len > 0; len--) {
+                if (i + len * 2 <= palabras.length) {
+                    const a = palabras.slice(i, i + len).map(normalizarParaComparar).join(' ');
+                    const b = palabras.slice(i + len, i + len * 2).map(normalizarParaComparar).join(' ');
+                    if (a === b) {
+                        resultado.push(...palabras.slice(i, i + len));
+                        i += len * 2;
+                        encontrado = true;
+                        break;
+                    }
+                }
+            }
+            if (!encontrado) {
+                resultado.push(palabras[i]);
+                i++;
+            }
+        }
+
+        return resultado.join(' ');
+    }
+
+    function limpiarDescripcion(texto) {
+        let out = normalizarBase(texto);
+        out = normalizarFragmentos(out);
+        out = eliminarDuplicadosConsecutivos(out);
+        out = normalizarUnidades(out);
+        out = corregirEspaciado(out);
+        out = normalizarFragmentos(out);
+        out = eliminarDuplicadosConsecutivos(out);
+        return normalizarBase(out).replace(/\\.\\s*$/, '');
+    }
+
+    function leerControl(el) {
+        if (!el) return '';
+        if ('value' in el) return el.value || '';
+        return (el.innerText || el.textContent || '').trim();
+    }
+
+    function escribirControl(el, valor) {
+        if (!el) return;
+        if ('value' in el) {
+            el.value = valor;
+        } else {
+            el.textContent = valor;
+        }
+        ['input', 'change', 'blur'].forEach(tipo => {
+            el.dispatchEvent(new Event(tipo, { bubbles: true }));
+        });
+    }
+
+    function buscarControlesEnTabla() {
+        const filas = Array.from(document.querySelectorAll('tr'));
+        const filaHeader = filas.find(tr => /DESCRIPCI[ÓO]N\\s+PROPUESTA/i.test((tr.innerText || tr.textContent || '')));
+        if (!filaHeader) return [];
+
+        const celdasHeader = Array.from(filaHeader.children);
+        const idx = celdasHeader.findIndex(c => /DESCRIPCI[ÓO]N\\s+PROPUESTA/i.test((c.innerText || c.textContent || '')));
+        if (idx < 0) return [];
+
+        const tabla = filaHeader.closest('table');
+        const filasData = Array.from((tabla || document).querySelectorAll('tbody tr'));
+        const candidatos = [];
+
+        filasData.forEach(fila => {
+            const celdas = Array.from(fila.children);
+            const celda = celdas[idx];
+            if (!celda) return;
+
+            const editable = celda.querySelector('textarea, input[type="text"], input:not([type]), [contenteditable="true"], [contenteditable=""], div, span, p');
+            if (!editable) return;
+
+            const texto = leerControl(editable);
+            if (texto && texto.length > 10) {
+                candidatos.push(editable);
+            }
+        });
+
+        return candidatos;
+    }
+
+    function buscarControlesFallback() {
+        const posibles = Array.from(document.querySelectorAll('textarea, input[type="text"], input:not([type]), [contenteditable="true"], [contenteditable=""], div'));
+        return posibles.filter(el => {
+            const txt = leerControl(el);
+            return txt.length > 18 && /(mg|tableta|c[aá]psula|blister|muestra)/i.test(txt);
+        });
+    }
+
+    const controles = buscarControlesEnTabla();
+    const objetivos = (controles.length ? controles : buscarControlesFallback()).slice(0, LIMITE);
+
+    if (objetivos.length === 0) {
+        alert('No se encontraron descripciones editables en "Descripción propuesta".');
+        return;
+    }
+
+    const salida = [];
+    let cambiadas = 0;
+
+    objetivos.forEach((control, idx) => {
+        const original = leerControl(control);
+        const limpio = limpiarDescripcion(original);
+        if (limpio && limpio !== original) {
+            cambiadas++;
+        }
+        escribirControl(control, limpio || original);
+        salida.push((limpio || original).trim());
+    });
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(salida.join('\\n')).catch(() => {});
+    }
+
+    alert('Auto-20 completado. Descripciones procesadas: ' + objetivos.length + '. Ajustadas: ' + cambiadas + '.');
+})();
+                        `.trim();
+                }
+
+                async function copiarBookmarkletDusakawi() {
+                        const script = obtenerScriptAutomatizadorDusakawi();
+                        const bookmarklet = `javascript:${encodeURIComponent(script)}`;
+
+                        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+                                mostrarAlerta('⚠️ No se pudo copiar automático. Tu navegador bloquea el portapapeles.', 'warning');
+                                return;
+                        }
+
+                        try {
+                                await navigator.clipboard.writeText(bookmarklet);
+                                mostrarAlerta('✅ Bookmarklet copiado. Guárdalo como favorito y ejecútalo en el monitor de cambios.', 'success');
+                        } catch (error) {
+                                mostrarAlerta('⚠️ No se pudo copiar el bookmarklet. Revisa permisos del navegador.', 'warning');
+                        }
+                }
+
+        function aplicarTemaClinico(activar) {
+            document.body.classList.toggle('theme-clinico', activar);
+            try {
+                localStorage.setItem('temaClinico', activar ? '1' : '0');
+            } catch (error) {
+                // Si localStorage no está disponible, solo aplicamos visualmente.
+            }
+        }
+
+        function mostrarComparacion(resultados, diagnostico = null) {
             const comparisonDiv = document.getElementById('comparison');
             comparisonDiv.innerHTML = '<h3 style="color: #667eea; margin-bottom: 15px;">📊 Comparación Detallada:</h3>';
+            const soloCambios = document.getElementById('soloCambiosToggle')?.checked;
+
+            const lineasSospechosas = new Set((diagnostico?.sospechosas || []).map(s => s.key));
             
             resultados.forEach(resultado => {
                 if (resultado.tipo === 'VACIO') return;
+
+                let huboCambio = false;
+                if (resultado.tipo === 'MULTIPLE') {
+                    const originalNorm = normalizarTextoParaRevision(resultado.original);
+                    const limpioNorm = normalizarTextoParaRevision(resultado.limpios.join(' | '));
+                    huboCambio = originalNorm !== limpioNorm;
+                } else {
+                    const originalNorm = normalizarTextoParaRevision(resultado.original);
+                    const limpioNorm = normalizarTextoParaRevision(resultado.limpio);
+                    huboCambio = originalNorm !== limpioNorm;
+                }
+
+                if (soloCambios && !huboCambio) return;
 
                 const itemDiv = document.createElement('div');
                 itemDiv.style.marginBottom = '20px';
@@ -1042,6 +1874,10 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                     resultado.limpios.forEach((limpio, idx) => {
                         const limpioDiv = document.createElement('div');
                         limpioDiv.className = 'comparison-item cleaned';
+                        if (lineasSospechosas.has(`${resultado.numero}.${idx + 1}`)) {
+                            limpioDiv.classList.add('suspicious');
+                        }
+                        limpioDiv.dataset.lineKey = `${resultado.numero}.${idx + 1}`;
                         limpioDiv.innerHTML = `
                             <div class="label">✅ Normalizado (${resultado.numero}.${idx + 1}):</div>
                             <div class="text">${limpio}</div>
@@ -1051,6 +1887,10 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 } else {
                     const limpioDiv = document.createElement('div');
                     limpioDiv.className = 'comparison-item cleaned';
+                    if (lineasSospechosas.has(`${resultado.numero}`)) {
+                        limpioDiv.classList.add('suspicious');
+                    }
+                    limpioDiv.dataset.lineKey = `${resultado.numero}`;
                     limpioDiv.innerHTML = `
                         <div class="label">✅ Normalizado (${resultado.numero}) - ${resultado.correcciones} correcciones:</div>
                         <div class="text">${resultado.limpio}</div>
@@ -1101,7 +1941,17 @@ PARACETAMOL COMBINACIONES EXCLUYENDO SICOLEPTICOS 325 mg TABLETA RECUBIERTA TABL
                 document.getElementById('inputText').value = '';
                 document.getElementById('outputText').value = '';
                 document.getElementById('stats').style.display = 'none';
+                document.getElementById('qualityBoard').style.display = 'none';
+                document.getElementById('reviewToolbar').style.display = 'none';
+                document.getElementById('soloCambiosToggle').checked = false;
                 document.getElementById('comparison').style.display = 'none';
+                document.getElementById('suspiciousList').innerHTML = '';
+                document.getElementById('qualityFill').style.width = '0%';
+                document.getElementById('riskDot').className = 'risk-dot';
+                document.getElementById('riskLabel').textContent = 'Sin evaluar';
+                document.getElementById('reviewNote').textContent = 'Revisión activa';
+                ultimoResultados = [];
+                ultimoDiagnostico = null;
                 
                 const alertBox = document.getElementById('alertBox');
                 alertBox.classList.remove('show');
@@ -1146,11 +1996,46 @@ ETANOL 73.7 mL. 100ML SOLUCION TOPICA FRASCO DE VIDRIO TIPO III POR 360 ML.`;
                 e.preventDefault();
                 procesarMedicamentos();
             }
+
+            // Ctrl + Shift + V para pegar desde portapapeles y procesar
+            if (e.ctrlKey && e.shiftKey && (e.key === 'V' || e.key === 'v')) {
+                e.preventDefault();
+                pegarDesdePortapapelesYProcesar();
+            }
             
             // Ctrl + L para limpiar
             if (e.ctrlKey && e.key === 'l') {
                 e.preventDefault();
                 limpiarTodo();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('soloCambiosToggle');
+            const temaClinicoToggle = document.getElementById('temaClinicoToggle');
+
+            if (toggle) {
+                toggle.addEventListener('change', function() {
+                    if (ultimoResultados.length > 0) {
+                        mostrarComparacion(ultimoResultados, ultimoDiagnostico);
+                    }
+                });
+            }
+
+            if (temaClinicoToggle) {
+                let temaGuardado = false;
+                try {
+                    temaGuardado = localStorage.getItem('temaClinico') === '1';
+                } catch (error) {
+                    temaGuardado = false;
+                }
+
+                temaClinicoToggle.checked = temaGuardado;
+                aplicarTemaClinico(temaGuardado);
+
+                temaClinicoToggle.addEventListener('change', function() {
+                    aplicarTemaClinico(temaClinicoToggle.checked);
+                });
             }
         });
     </script>
